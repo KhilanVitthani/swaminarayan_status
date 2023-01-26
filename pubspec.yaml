@@ -1,0 +1,53 @@
+name: buddha_mindfulness
+version: 1.0.0+1
+publish_to: none
+description: A new Flutter project.
+environment: 
+  sdk: '>=2.17.6 <3.0.0'
+
+dependencies: 
+  cupertino_icons: ^1.0.2
+  firebase_core:
+  flutter_svg:
+  connectivity_plus:
+  photo_view: ^0.14.0
+  get_it:
+  get_storage:
+#  yodo1mas: ^0.1.1
+  onesignal_flutter: ^3.5.0
+  cloud_firestore: ^4.3.1
+  get: 4.6.5
+  cached_network_image:
+  pinch_zoom: ^1.0.0
+  flutter_native_splash:
+  share_plus:
+  gallery_saver: ^2.3.2
+  flick_video_player: ^0.5.0
+  video_player:
+  fluttertoast:
+  flutter: 
+    sdk: flutter
+
+dev_dependencies: 
+  flutter_lints: ^2.0.0
+  flutter_test: 
+    sdk: flutter
+dependency_overrides:
+  firebase_core_platform_interface: 4.5.2
+
+flutter: 
+  uses-material-design: true
+  assets:
+    - assets/images/
+
+  fonts:
+    - family: Lato
+      fonts:
+        - asset: assets/Fonts/Lato-Light.ttf
+          weight: 200
+        - asset: assets/Fonts/Lato-Regular.ttf
+          weight: 400
+
+        - asset: assets/Fonts/Lato-Bold.ttf
+          weight: 700
+
