@@ -245,6 +245,8 @@ class HomeView extends GetView<HomeController> {
                                                       .mediaLink
                                                       .toString();
                                                   print(path);
+                                                  print(GallerySaver
+                                                      .pleaseProvidePath);
                                                   GallerySaver.saveImage(path)
                                                       .then((value) {
                                                     Fluttertoast.showToast(
