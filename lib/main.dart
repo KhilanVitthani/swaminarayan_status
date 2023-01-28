@@ -42,7 +42,7 @@ void main() async {
   ]);
   OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
 
-  OneSignal.shared.setAppId("db2562c3-bf37-41be-b795-7ae4a76f4fe3");
+  OneSignal.shared.setAppId("ab0f47df-ef21-4e81-b62d-703da55d3672");
 
 // The promptForPushNotificationsWithUserResponse function will show the iOS or Android push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
   OneSignal.shared.promptUserForPushNotificationPermission().then((accepted) {
@@ -50,6 +50,7 @@ void main() async {
   });
   OneSignal.shared.setNotificationWillShowInForegroundHandler(
       (OSNotificationReceivedEvent event) {
+    print(event.notification.body);
     // Will be called whenever a notification is receiv ed in foreground
     // Display Notification, pass null param for not displaying the notification
     event.complete(event.notification);
