@@ -1,4 +1,4 @@
-import 'package:buddha_mindfulness/constants/color_constant.dart';
+import 'package:swaminarayn_status/constants/color_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 

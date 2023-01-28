@@ -1,27 +1,20 @@
-import 'package:buddha_mindfulness/app/models/daily_thought_model.dart';
-import 'package:buddha_mindfulness/app/models/data_model.dart';
-import 'package:buddha_mindfulness/app/models/save_model.dart';
-import 'package:buddha_mindfulness/app/routes/app_pages.dart';
-import 'package:buddha_mindfulness/constants/api_constants.dart';
-import 'package:buddha_mindfulness/constants/color_constant.dart';
+import 'package:swaminarayn_status/app/models/daily_thought_model.dart';
+import 'package:swaminarayn_status/app/routes/app_pages.dart';
+import 'package:swaminarayn_status/constants/api_constants.dart';
+import 'package:swaminarayn_status/constants/color_constant.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 
 import 'package:get/get.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:video_player/video_player.dart';
 // import 'package:yodo1mas/Yodo1MasBannerAd.dart';
 
 import '../../../../constants/firebase_controller.dart';
 import '../../../../constants/sizeConstant.dart';
-import '../../../../main.dart';
-import '../../../../utilities/ad_service.dart';
-import '../../../../utilities/timer_service.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {

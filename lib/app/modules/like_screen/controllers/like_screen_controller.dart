@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:buddha_mindfulness/constants/sizeConstant.dart';
+import 'package:swaminarayn_status/constants/sizeConstant.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 // import 'package:yodo1mas/Yodo1MAS.dart';

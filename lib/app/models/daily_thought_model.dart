@@ -1,4 +1,4 @@
-import 'package:buddha_mindfulness/constants/sizeConstant.dart';
+import 'package:swaminarayn_status/constants/sizeConstant.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 

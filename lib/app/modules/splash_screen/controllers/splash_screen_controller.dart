@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:buddha_mindfulness/app/routes/app_pages.dart';
-import 'package:buddha_mindfulness/constants/api_constants.dart';
-import 'package:buddha_mindfulness/main.dart';
-import 'package:buddha_mindfulness/utilities/timer_service.dart';
+import 'package:swaminarayn_status/app/routes/app_pages.dart';
+import 'package:swaminarayn_status/constants/api_constants.dart';
+import 'package:swaminarayn_status/main.dart';
+import 'package:swaminarayn_status/utilities/timer_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';

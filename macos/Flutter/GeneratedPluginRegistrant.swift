@@ -8,7 +8,7 @@ import Foundation
 import cloud_firestore
 import connectivity_plus
 import firebase_core
-import path_provider_macos
+import path_provider_foundation
 import share_plus
 import sqflite
 import wakelock_macos
