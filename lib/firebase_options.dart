@@ -63,21 +63,21 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyBr26ih0rwKJR1jO7w6c8K6EroqqBBcy5U',
-    appId: '1:688032127071:ios:4f10689d8af7521ec2e3ea',
+    appId: '1:688032127071:ios:983c8406f8446d69c2e3ea',
     messagingSenderId: '688032127071',
     projectId: 'swaminarayanstatus-f8550',
     storageBucket: 'swaminarayanstatus-f8550.appspot.com',
-    iosClientId: '688032127071-62mil5mcpijrrvetjr4hdupg003gi25h.apps.googleusercontent.com',
-    iosBundleId: 'com.example.buddhaMindfulness',
+    iosClientId: '688032127071-h70v4cmn466cdtldm2u9ij57q9du78ua.apps.googleusercontent.com',
+    iosBundleId: 'com.mobileappxperts.swaminarayanstatus',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyBr26ih0rwKJR1jO7w6c8K6EroqqBBcy5U',
-    appId: '1:688032127071:ios:4f10689d8af7521ec2e3ea',
+    appId: '1:688032127071:ios:983c8406f8446d69c2e3ea',
     messagingSenderId: '688032127071',
     projectId: 'swaminarayanstatus-f8550',
     storageBucket: 'swaminarayanstatus-f8550.appspot.com',
-    iosClientId: '688032127071-62mil5mcpijrrvetjr4hdupg003gi25h.apps.googleusercontent.com',
-    iosBundleId: 'com.example.buddhaMindfulness',
+    iosClientId: '688032127071-h70v4cmn466cdtldm2u9ij57q9du78ua.apps.googleusercontent.com',
+    iosBundleId: 'com.mobileappxperts.swaminarayanstatus',
   );
 }

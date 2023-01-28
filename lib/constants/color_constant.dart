@@ -1,4 +1,4 @@
-import 'package:buddha_mindfulness/constants/sizeConstant.dart';
+import 'package:swaminarayan_status/constants/sizeConstant.dart';
 import 'package:flutter/material.dart';
 
 class BaseTheme {

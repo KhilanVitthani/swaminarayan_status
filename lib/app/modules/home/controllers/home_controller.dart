@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:buddha_mindfulness/app/models/daily_thought_model.dart';
-import 'package:buddha_mindfulness/constants/api_constants.dart';
-import 'package:buddha_mindfulness/constants/sizeConstant.dart';
-import 'package:buddha_mindfulness/main.dart';
+import 'package:swaminarayan_status/app/models/daily_thought_model.dart';
+import 'package:swaminarayan_status/constants/api_constants.dart';
+import 'package:swaminarayan_status/constants/sizeConstant.dart';
+import 'package:swaminarayan_status/main.dart';
 import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';

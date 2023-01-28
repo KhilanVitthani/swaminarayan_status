@@ -1,4 +1,4 @@
-import 'package:buddha_mindfulness/app/models/save_model.dart';
+import 'package:swaminarayan_status/app/models/save_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FireController {

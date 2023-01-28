@@ -1,7 +1,7 @@
-import 'package:buddha_mindfulness/app/models/daily_thought_model.dart';
-import 'package:buddha_mindfulness/app/routes/app_pages.dart';
-import 'package:buddha_mindfulness/constants/api_constants.dart';
-import 'package:buddha_mindfulness/constants/color_constant.dart';
+import 'package:swaminarayan_status/app/models/daily_thought_model.dart';
+import 'package:swaminarayan_status/app/routes/app_pages.dart';
+import 'package:swaminarayan_status/constants/api_constants.dart';
+import 'package:swaminarayan_status/constants/color_constant.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter/material.dart';
