@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "swaminarayn_status" "\0"
+            VALUE "FileDescription", "buddha_mindfulness" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "swaminarayn_status" "\0"
+            VALUE "InternalName", "buddha_mindfulness" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2023 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "swaminarayn_status.exe" "\0"
-            VALUE "ProductName", "swaminarayn_status" "\0"
+            VALUE "OriginalFilename", "buddha_mindfulness.exe" "\0"
+            VALUE "ProductName", "buddha_mindfulness" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
