@@ -68,7 +68,7 @@ class HomeView extends GetView<HomeController> {
                       print("object");
                       return Center(child: CircularProgressIndicator());
                     } else if (data.hasError) {
-                      print("object");
+                      // print("object");
                       return Text(
                         "Error",
                         style: TextStyle(color: Colors.amber),

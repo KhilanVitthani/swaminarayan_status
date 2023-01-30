@@ -85,10 +85,10 @@ class AllPostScreenView extends GetWidget<AllPostScreenController> {
                   child: StreamBuilder<QuerySnapshot>(
                     builder: (context, data) {
                       if (data.connectionState == ConnectionState.waiting) {
-                        print("object");
+                        // print("object");
                         return Center(child: CircularProgressIndicator());
                       } else if (data.hasError) {
-                        print("object");
+                        // print("object");
                         return Text(
                           "Error",
                           style: TextStyle(color: Colors.amber),
@@ -122,8 +122,8 @@ class AllPostScreenView extends GetWidget<AllPostScreenController> {
                                           .contains(dataModel.uId)) {
                                         dataModel.isLiked!.value = true;
                                       }
-                                      print(
-                                          "Data:=============${data.data!.docs.length}");
+                                      // print(
+                                      //     "Data:=============${data.data!.docs.length}");
                                       return GestureDetector(
                                         onTap: () {
                                           Get.offAndToNamed(
