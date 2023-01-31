@@ -41,13 +41,13 @@ flutter:
     - assets/images/
 
   fonts:
-    - family: Lato
+    - family: Sf_pro_display
       fonts:
-        - asset: assets/Fonts/Lato-Light.ttf
+        - asset: assets/Fonts/SF-Pro-Display-Light.ttf
           weight: 200
-        - asset: assets/Fonts/Lato-Regular.ttf
+        - asset: assets/Fonts/SF-Pro-Display-Regular.ttf
           weight: 400
 
-        - asset: assets/Fonts/Lato-Bold.ttf
+        - asset: assets/Fonts/SF-Pro-Display-Bold.ttf
           weight: 700
 

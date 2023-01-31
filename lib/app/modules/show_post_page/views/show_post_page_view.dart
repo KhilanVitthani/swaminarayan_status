@@ -83,18 +83,20 @@ class ShowPostPageView extends GetWidget<ShowPostPageController> {
                       Padding(
                         padding: EdgeInsets.symmetric(
                             horizontal: MySize.getWidth(20)),
-                        child: PhotoView.customChild(
-                          child: getImageByLink(
-                            url: controller.postData!.mediaLink.toString(),
+                        child: Container(
+                          child: PhotoView.customChild(
+                            child: getImageByLink(
+                              url: controller.postData!.mediaLink.toString(),
+                            ),
+                            initialScale: 1.0,
+                            backgroundDecoration:
+                                BoxDecoration(color: Colors.white),
+                            enableRotation: false,
                           ),
-                          initialScale: 1.0,
-                          backgroundDecoration:
-                              BoxDecoration(color: Colors.white),
-                          enableRotation: false,
                         ),
                       ),
                       Positioned(
-                        bottom: MySize.getHeight(135),
+                        bottom: MySize.getHeight(160),
                         child: Padding(
                           padding: EdgeInsets.symmetric(
                               horizontal: MySize.getWidth(20)),

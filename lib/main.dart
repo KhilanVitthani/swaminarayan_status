@@ -65,7 +65,7 @@ void main() async {
   runApp(
     GetMaterialApp(
       theme: ThemeData(
-        fontFamily: 'Lato',
+        fontFamily: 'Sf_pro_display',
       ),
       debugShowCheckedModeBanner: false,
       title: "Application",

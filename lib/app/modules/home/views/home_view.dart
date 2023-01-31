@@ -109,193 +109,269 @@ class HomeView extends GetView<HomeController> {
                                   controller.hide();
                                 }
 
-                                return GestureDetector(
-                                  onTap: () {},
-                                  child: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: MySize.getWidth(15)),
-                                    child: Column(
-                                      children: [
-                                        Expanded(
-                                          child: (!isNullEmptyOrFalse(
-                                                  dailyThought.videoThumbnail))
-                                              ? Obx(() {
-                                                  return GestureDetector(
-                                                    onTap: () {
-                                                      controller.isTaped
-                                                          .toggle();
+                                return Column(
+                                  children: [
+                                    Expanded(
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          boxShadow: [
+                                            BoxShadow(
+                                                color: Color.fromRGBO(
+                                                    24, 24, 24, 0.12),
+                                                spreadRadius: 2,
+                                                blurRadius: 12,
+                                                offset: Offset(0,
+                                                    12) // changes position of shadow
+                                                ),
+                                          ],
+                                        ),
+                                        child: Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: MySize.getWidth(15)),
+                                          child: Column(
+                                            children: [
+                                              Expanded(
+                                                child: (!isNullEmptyOrFalse(
+                                                        dailyThought
+                                                            .videoThumbnail))
+                                                    ? Obx(() {
+                                                        return GestureDetector(
+                                                          onTap: () {
+                                                            controller.isTaped
+                                                                .toggle();
 
-                                                      if (controller
-                                                          .isTaped.isTrue) {
-                                                        controller.hide();
-                                                      }
-                                                    },
-                                                    child: Container(
-                                                      child: (controller
-                                                                  .flickManager ==
-                                                              null)
-                                                          ? Visibility(
-                                                              visible:
-                                                                  controller
-                                                                      .isTaped
-                                                                      .value,
-                                                              child: Center(
-                                                                child:
-                                                                    CircularProgressIndicator(),
-                                                              ),
-                                                            )
-                                                          : Container(
-                                                              height: MySize
-                                                                  .getHeight(
-                                                                      610),
-                                                              width: MySize
-                                                                  .getWidth(
-                                                                      320),
-                                                              child:
-                                                                  FlickVideoPlayer(
-                                                                      flickVideoWithControls:
-                                                                          FlickVideoWithControls(
-                                                                        controls:
-                                                                            Visibility(
-                                                                          visible: controller
-                                                                              .isTaped
-                                                                              .value,
-                                                                          child:
-                                                                              Center(
-                                                                            child:
-                                                                                FlickPlayToggle(size: MySize.getHeight(35)),
+                                                            if (controller
+                                                                .isTaped
+                                                                .isTrue) {
+                                                              controller.hide();
+                                                            }
+                                                          },
+                                                          child: Container(
+                                                            child: (controller
+                                                                        .flickManager ==
+                                                                    null)
+                                                                ? Visibility(
+                                                                    visible: controller
+                                                                        .isTaped
+                                                                        .value,
+                                                                    child:
+                                                                        Center(
+                                                                      child:
+                                                                          CircularProgressIndicator(),
+                                                                    ),
+                                                                  )
+                                                                : Container(
+                                                                    height: MySize
+                                                                        .getHeight(
+                                                                            610),
+                                                                    width: MySize
+                                                                        .getWidth(
+                                                                            320),
+                                                                    child:
+                                                                        ClipRRect(
+                                                                      borderRadius: BorderRadius.only(
+                                                                          topLeft: Radius.circular(MySize.getHeight(
+                                                                              12)),
+                                                                          topRight:
+                                                                              Radius.circular(MySize.getHeight(12))),
+                                                                      child: FlickVideoPlayer(
+                                                                          flickVideoWithControls: FlickVideoWithControls(
+                                                                            controls:
+                                                                                Visibility(
+                                                                              visible: controller.isTaped.value,
+                                                                              child: Center(
+                                                                                child: FlickPlayToggle(size: MySize.getHeight(35)),
+                                                                              ),
+                                                                            ),
+                                                                            videoFit:
+                                                                                BoxFit.fitHeight,
                                                                           ),
-                                                                        ),
-                                                                        videoFit:
-                                                                            BoxFit.fitHeight,
-                                                                      ),
-                                                                      flickManager: controller
-                                                                          .flickManager!
-                                                                          .value),
-                                                            ),
+                                                                          flickManager: controller.flickManager!.value),
+                                                                    ),
+                                                                  ),
+                                                          ),
+                                                        );
+                                                      })
+                                                    : Container(
+                                                        decoration: BoxDecoration(
+                                                            borderRadius: BorderRadius.only(
+                                                                topLeft: Radius
+                                                                    .circular(MySize
+                                                                        .getHeight(
+                                                                            12)),
+                                                                topRight: Radius
+                                                                    .circular(MySize
+                                                                        .getHeight(
+                                                                            12)))),
+                                                        child: getImageByLink(
+                                                            url: dailyThought
+                                                                .mediaLink!,
+                                                            height: MySize
+                                                                .getHeight(325),
+                                                            width:
+                                                                MySize.getWidth(
+                                                                    320),
+                                                            boxFit:
+                                                                BoxFit.contain),
+                                                      ),
+                                              ),
+                                              Container(
+                                                height: MySize.getHeight(50),
+                                                decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius:
+                                                        BorderRadius.only(
+                                                      bottomLeft:
+                                                          Radius.circular(
+                                                              MySize.getHeight(
+                                                                  12)),
+                                                      bottomRight:
+                                                          Radius.circular(
+                                                              MySize.getHeight(
+                                                                  12)),
+                                                    )),
+                                                child: Row(
+                                                  children: [
+                                                    SizedBox(
+                                                      width:
+                                                          MySize.getWidth(14),
                                                     ),
-                                                  );
-                                                })
-                                              : getImageByLink(
-                                                  url: dailyThought.mediaLink!,
-                                                  height: MySize.getHeight(325),
-                                                  width: MySize.getWidth(320),
-                                                  boxFit: BoxFit.contain),
-                                        ),
-                                        SizedBox(
-                                          height: MySize.getHeight(9),
-                                        ),
-                                        Row(
-                                          children: [
-                                            SizedBox(
-                                              width: MySize.getWidth(14),
-                                            ),
-                                            Obx(() {
-                                              return GestureDetector(
-                                                onTap: () {
-                                                  dailyThought.isLiked!
-                                                      .toggle();
-                                                  if (dailyThought
-                                                      .isLiked!.isTrue) {
-                                                    controller.addDataToLike(
-                                                        data: dailyThought.uId
-                                                            .toString()
-                                                            .trim());
-                                                  } else {
-                                                    controller.removeDataToLike(
-                                                        data: dailyThought.uId
-                                                            .toString()
-                                                            .trim());
-                                                  }
-                                                },
-                                                child: (dailyThought
-                                                        .isLiked!.isTrue)
-                                                    ? SvgPicture.asset(
-                                                        imagePath +
-                                                            "likeFill.svg",
-                                                        height:
-                                                            MySize.getHeight(
-                                                                22.94),
-                                                      )
-                                                    : SvgPicture.asset(
-                                                        imagePath + "like.svg",
+                                                    Obx(() {
+                                                      return GestureDetector(
+                                                        onTap: () {
+                                                          dailyThought.isLiked!
+                                                              .toggle();
+                                                          if (dailyThought
+                                                              .isLiked!
+                                                              .isTrue) {
+                                                            controller.addDataToLike(
+                                                                data: dailyThought
+                                                                    .uId
+                                                                    .toString()
+                                                                    .trim());
+                                                          } else {
+                                                            controller.removeDataToLike(
+                                                                data: dailyThought
+                                                                    .uId
+                                                                    .toString()
+                                                                    .trim());
+                                                          }
+                                                        },
+                                                        child: (dailyThought
+                                                                .isLiked!
+                                                                .isTrue)
+                                                            ? SvgPicture.asset(
+                                                                imagePath +
+                                                                    "likeFill.svg",
+                                                                height: MySize
+                                                                    .getHeight(
+                                                                        22.94),
+                                                              )
+                                                            : SvgPicture.asset(
+                                                                imagePath +
+                                                                    "like.svg",
+                                                                height: MySize
+                                                                    .getHeight(
+                                                                        22.94),
+                                                              ),
+                                                      );
+                                                    }),
+                                                    SizedBox(
+                                                      width:
+                                                          MySize.getWidth(25),
+                                                    ),
+                                                    GestureDetector(
+                                                      onTap: () async {
+                                                        // controller.ads();
+                                                        if (isNullEmptyOrFalse(
+                                                            dailyThought
+                                                                .videoThumbnail)) {
+                                                          String path =
+                                                              dailyThought
+                                                                  .mediaLink
+                                                                  .toString();
+                                                          print(path);
+                                                          print(GallerySaver
+                                                              .pleaseProvidePath);
+                                                          GallerySaver
+                                                                  .saveImage(
+                                                                      path)
+                                                              .then((value) {
+                                                            Fluttertoast.showToast(
+                                                                msg: "Success!",
+                                                                toastLength: Toast
+                                                                    .LENGTH_SHORT,
+                                                                gravity:
+                                                                    ToastGravity
+                                                                        .BOTTOM,
+                                                                timeInSecForIosWeb:
+                                                                    1,
+                                                                textColor:
+                                                                    Colors
+                                                                        .white,
+                                                                fontSize: 16.0);
+                                                          });
+                                                        } else {
+                                                          String path =
+                                                              dailyThought
+                                                                  .mediaLink
+                                                                  .toString();
+                                                          print(path);
+                                                          GallerySaver
+                                                                  .saveVideo(
+                                                                      path)
+                                                              .then((value) {
+                                                            Fluttertoast.showToast(
+                                                                msg: "Success!",
+                                                                toastLength: Toast
+                                                                    .LENGTH_SHORT,
+                                                                gravity:
+                                                                    ToastGravity
+                                                                        .BOTTOM,
+                                                                timeInSecForIosWeb:
+                                                                    1,
+                                                                textColor:
+                                                                    Colors
+                                                                        .white,
+                                                                fontSize: 16.0);
+                                                          }).catchError(
+                                                                  (error) {
+                                                            print(error);
+                                                          });
+                                                        }
+                                                      },
+                                                      child: SvgPicture.asset(
+                                                        imagePath + "down.svg",
                                                         height:
                                                             MySize.getHeight(
                                                                 22.94),
                                                       ),
-                                              );
-                                            }),
-                                            SizedBox(
-                                              width: MySize.getWidth(25),
-                                            ),
-                                            GestureDetector(
-                                              onTap: () async {
-                                                // controller.ads();
-                                                if (isNullEmptyOrFalse(
-                                                    dailyThought
-                                                        .videoThumbnail)) {
-                                                  String path = dailyThought
-                                                      .mediaLink
-                                                      .toString();
-                                                  print(path);
-                                                  print(GallerySaver
-                                                      .pleaseProvidePath);
-                                                  GallerySaver.saveImage(path)
-                                                      .then((value) {
-                                                    Fluttertoast.showToast(
-                                                        msg: "Success!",
-                                                        toastLength:
-                                                            Toast.LENGTH_SHORT,
-                                                        gravity:
-                                                            ToastGravity.BOTTOM,
-                                                        timeInSecForIosWeb: 1,
-                                                        textColor: Colors.white,
-                                                        fontSize: 16.0);
-                                                  });
-                                                } else {
-                                                  String path = dailyThought
-                                                      .mediaLink
-                                                      .toString();
-                                                  print(path);
-                                                  GallerySaver.saveVideo(path)
-                                                      .then((value) {
-                                                    Fluttertoast.showToast(
-                                                        msg: "Success!",
-                                                        toastLength:
-                                                            Toast.LENGTH_SHORT,
-                                                        gravity:
-                                                            ToastGravity.BOTTOM,
-                                                        timeInSecForIosWeb: 1,
-                                                        textColor: Colors.white,
-                                                        fontSize: 16.0);
-                                                  }).catchError((error) {
-                                                    print(error);
-                                                  });
-                                                }
-                                              },
-                                              child: SvgPicture.asset(
-                                                imagePath + "down.svg",
-                                                height: MySize.getHeight(22.94),
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: MySize.getWidth(25),
-                                            ),
-                                            GestureDetector(
-                                              onTap: () {
-                                                Share.share(
-                                                    dailyThought.mediaLink!);
-                                              },
-                                              child: SvgPicture.asset(
-                                                imagePath + "share.svg",
-                                                height: MySize.getHeight(22.94),
-                                              ),
-                                            ),
-                                          ],
-                                        )
-                                      ],
+                                                    ),
+                                                    SizedBox(
+                                                      width:
+                                                          MySize.getWidth(25),
+                                                    ),
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        Share.share(dailyThought
+                                                            .mediaLink!);
+                                                      },
+                                                      child: SvgPicture.asset(
+                                                        imagePath + "share.svg",
+                                                        height:
+                                                            MySize.getHeight(
+                                                                22.94),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                  ),
+                                  ],
                                 );
                               },
                               itemCount: 1,
@@ -476,7 +552,9 @@ class HomeView extends GetView<HomeController> {
                                           ),
                                         );
                                       },
-                                      itemCount: data.data!.docs.length,
+                                      itemCount: (data.data!.docs.length < 15)
+                                          ? data.data!.docs.length
+                                          : 15,
                                     ),
                                   ),
                                 ),
