@@ -8,7 +8,7 @@ import '../../../../constants/api_constants.dart';
 import '../../../../constants/sizeConstant.dart';
 import '../controllers/splash_screen_controller.dart';
 
-class SplashScreenView extends GetWidget<SplashScreenController> {
+class SplashScreenView extends GetView<SplashScreenController> {
   const SplashScreenView({Key? key}) : super(key: key);
 
   @override
@@ -19,46 +19,50 @@ class SplashScreenView extends GetWidget<SplashScreenController> {
         builder: (controller) {
           return SafeArea(
             child: Scaffold(
-              body: Container(
-                height: MySize.safeHeight,
-                width: MySize.safeWidth,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(imagePath + "splash.png"),
-                    fit: BoxFit.fill,
-                  ),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      imagePath + "icon.png",
-                      height: MySize.getHeight(72),
-                      width: MySize.getWidth(68),
-                    ),
-                    Spacing.height(MySize.getHeight(3)),
-                    Text(
-                      "Quote",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: MySize.getHeight(50),
-                        color: Color(0xffF8D4CE),
-                      ),
-                    ),
-                    SizedBox(
-                      height: MySize.getHeight(4),
-                    ),
-                    Text(
-                      "with the new day",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: MySize.getHeight(20),
-                        color: Color(0xffF8D4CE),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              body: Image.asset(imagePath + "splash.png",
+                  width: MySize.safeWidth,
+                  height: MySize.safeHeight,
+                  fit: BoxFit.cover),
+              // body: Container(
+              //   height: MySize.safeHeight,
+              //   width: MySize.safeWidth,
+              //   decoration: BoxDecoration(
+              //     image: DecorationImage(
+              //       image: AssetImage(imagePath + "splash.png"),
+              //       fit: BoxFit.fill,
+              //     ),
+              //   ),
+              //   child: Column(
+              //     mainAxisAlignment: MainAxisAlignment.center,
+              //     children: [
+              //       Image.asset(
+              //         imagePath + "icon.png",
+              //         height: MySize.getHeight(72),
+              //         width: MySize.getWidth(68),
+              //       ),
+              //       Spacing.height(MySize.getHeight(3)),
+              //       Text(
+              //         "Quote",
+              //         style: TextStyle(
+              //           fontWeight: FontWeight.w600,
+              //           fontSize: MySize.getHeight(50),
+              //           color: Color(0xffF8D4CE),
+              //         ),
+              //       ),
+              //       SizedBox(
+              //         height: MySize.getHeight(4),
+              //       ),
+              //       Text(
+              //         "with the new day",
+              //         style: TextStyle(
+              //           fontWeight: FontWeight.w600,
+              //           fontSize: MySize.getHeight(20),
+              //           color: Color(0xffF8D4CE),
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
             ),
           );
         });

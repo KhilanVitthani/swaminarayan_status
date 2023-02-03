@@ -116,12 +116,11 @@ class HomeView extends GetView<HomeController> {
                                         decoration: BoxDecoration(
                                           boxShadow: [
                                             BoxShadow(
-                                                color: Color.fromRGBO(
-                                                    24, 24, 24, 0.12),
-                                                spreadRadius: 2,
-                                                blurRadius: 12,
+                                                color: Color(0xff1818181F),
+                                                spreadRadius: 0,
+                                                blurRadius: 20,
                                                 offset: Offset(0,
-                                                    12) // changes position of shadow
+                                                    4) // changes position of shadow
                                                 ),
                                           ],
                                         ),
@@ -193,26 +192,28 @@ class HomeView extends GetView<HomeController> {
                                                         );
                                                       })
                                                     : Container(
-                                                        decoration: BoxDecoration(
-                                                            borderRadius: BorderRadius.only(
-                                                                topLeft: Radius
-                                                                    .circular(MySize
-                                                                        .getHeight(
-                                                                            12)),
-                                                                topRight: Radius
-                                                                    .circular(MySize
-                                                                        .getHeight(
-                                                                            12)))),
-                                                        child: getImageByLink(
-                                                            url: dailyThought
-                                                                .mediaLink!,
-                                                            height: MySize
-                                                                .getHeight(325),
-                                                            width:
-                                                                MySize.getWidth(
-                                                                    320),
-                                                            boxFit:
-                                                                BoxFit.contain),
+                                                        child: ClipRRect(
+                                                          borderRadius: BorderRadius.only(
+                                                              topLeft: Radius
+                                                                  .circular(MySize
+                                                                      .getHeight(
+                                                                          12)),
+                                                              topRight: Radius
+                                                                  .circular(MySize
+                                                                      .getHeight(
+                                                                          12))),
+                                                          child: getImageByLink(
+                                                              url: dailyThought
+                                                                  .mediaLink!,
+                                                              height: MySize
+                                                                  .getHeight(
+                                                                      325),
+                                                              width: MySize
+                                                                  .getWidth(
+                                                                      320),
+                                                              boxFit:
+                                                                  BoxFit.cover),
+                                                        ),
                                                       ),
                                               ),
                                               Container(

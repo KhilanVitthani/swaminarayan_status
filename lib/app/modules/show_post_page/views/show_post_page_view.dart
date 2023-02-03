@@ -86,8 +86,8 @@ class ShowPostPageView extends GetWidget<ShowPostPageController> {
                         child: Container(
                           child: PhotoView.customChild(
                             child: getImageByLink(
-                              url: controller.postData!.mediaLink.toString(),
-                            ),
+                                url: controller.postData!.mediaLink.toString(),
+                                boxFit: BoxFit.contain),
                             initialScale: 1.0,
                             backgroundDecoration:
                                 BoxDecoration(color: Colors.white),
@@ -188,7 +188,29 @@ class ShowPostPageView extends GetWidget<ShowPostPageController> {
                             ],
                           ),
                         ),
-                      )
+                      ),
+                      // Positioned(
+                      //   left: MySize.getWidth(20),
+                      //   right: MySize.getWidth(20),
+                      //   top: MySize.getHeight(185),
+                      //   child: Container(
+                      //     height: MySize.getHeight(400),
+                      //     width: MySize.getWidth(320),
+                      //     decoration: BoxDecoration(
+                      //       color: Colors.transparent,
+                      //       borderRadius: BorderRadius.circular(12),
+                      //       boxShadow: [
+                      //         BoxShadow(
+                      //             color: Color.fromRGBO(24, 24, 24, 0.12),
+                      //             spreadRadius: 2,
+                      //             blurRadius: 12,
+                      //             offset: Offset(
+                      //                 0, 12) // changes position of shadow
+                      //             ),
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   )
                 : Center(
