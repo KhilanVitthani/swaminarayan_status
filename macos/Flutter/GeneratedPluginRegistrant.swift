@@ -6,7 +6,7 @@ import FlutterMacOS
 import Foundation
 
 import cloud_firestore
-import connectivity_plus
+import connectivity_plus_macos
 import firebase_core
 import path_provider_foundation
 import share_plus
