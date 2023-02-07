@@ -22,22 +22,9 @@ class AllPostScreenView extends GetWidget<AllPostScreenController> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        if (getIt<TimerService>().is40SecCompleted) {
-          // await getIt<AdService>()
-          //     .getAd(adType: AdService.interstitialAd)
-          //     .then((value) {
-          //   if (!value) {
-          //     getIt<TimerService>().verifyTimer();
-          //     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-          //
-          //     Get.offAllNamed(Routes.HOME);
-          //   }
-          // });
-          //
-          // return await false;
-        } else {
+
           Get.offAllNamed(Routes.HOME);
-        }
+
         return await true;
       },
       child: SafeArea(
@@ -53,21 +40,9 @@ class AllPostScreenView extends GetWidget<AllPostScreenController> {
             centerTitle: true,
             leading: GestureDetector(
               onTap: () async {
-                if (getIt<TimerService>().is40SecCompleted) {
-                  // await getIt<AdService>()
-                  //     .getAd(adType: AdService.interstitialAd)
-                  //     .then((value) {
-                  //   if (!value) {
-                  //     getIt<TimerService>().verifyTimer();
-                  //     SystemChrome.setEnabledSystemUIMode(
-                  //         SystemUiMode.edgeToEdge);
-                  //
-                  //     Get.offAllNamed(Routes.HOME);
-                  //   }
-                  // });
-                } else {
+
                   Get.offAllNamed(Routes.HOME);
-                }
+
               },
               child: Container(
                 padding: EdgeInsets.only(left: MySize.getWidth(10)),

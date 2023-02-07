@@ -283,7 +283,7 @@ class HomeView extends GetView<HomeController> {
                                                     ),
                                                     GestureDetector(
                                                       onTap: () async {
-                                                        // controller.ads();
+                                                        controller.ads();
                                                         if (isNullEmptyOrFalse(
                                                             dailyThought
                                                                 .videoThumbnail)) {

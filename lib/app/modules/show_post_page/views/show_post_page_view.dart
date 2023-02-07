@@ -138,7 +138,7 @@ class ShowPostPageView extends GetWidget<ShowPostPageController> {
                               GestureDetector(
                                 onTap: () {
                                   controller.isFromDownload.value = true;
-                                  // controller.ads();
+                                  controller.ads();
                                   if (isNullEmptyOrFalse(
                                       controller.postData!.videoThumbnail)) {
                                     String path = controller.postData!.mediaLink
@@ -279,7 +279,7 @@ class ShowPostPageView extends GetWidget<ShowPostPageController> {
                               GestureDetector(
                                 onTap: () {
                                   controller.isFromDownload.value = true;
-                                  // controller.ads();
+                                  controller.ads();
                                   if (isNullEmptyOrFalse(
                                       controller.postData!.videoThumbnail)) {
                                     String path = controller.postData!.mediaLink

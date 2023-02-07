@@ -6,5 +6,5 @@ import '../utilities/timer_service.dart';
 void setUp() {
   getIt.registerSingleton<CustomDialogs>(CustomDialogs());
   getIt.registerSingleton<TimerService>(TimerService());
-  // getIt.registerSingleton<AdService>(AdService());
+  getIt.registerSingleton<AdService>(AdService());
 }
