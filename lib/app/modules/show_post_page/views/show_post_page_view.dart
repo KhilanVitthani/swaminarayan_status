@@ -96,7 +96,7 @@ class ShowPostPageView extends GetWidget<ShowPostPageController> {
                         ),
                       ),
                       Positioned(
-                        bottom: MySize.getHeight(160),
+                        bottom: MySize.getHeight(155),
                         child: Padding(
                           padding: EdgeInsets.symmetric(
                               horizontal: MySize.getWidth(20)),
