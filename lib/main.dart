@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:yodo1mas/Yodo1MAS.dart';
 // import 'package:yodo1mas/Yodo1MAS.dart';
 
 import 'app/routes/app_pages.dart';
@@ -55,11 +56,11 @@ void main() async {
     // Display Notification, pass null param for not displaying the notification
     event.complete(event.notification);
   });
-  // Yodo1MAS.instance.init(
-  //   "tenPXrtko1",
-  //   true,
-  //   (successful) {},
-  // );
+  Yodo1MAS.instance.init(
+    "oM3jMyKpn9",
+    true,
+    (successful) {},
+  );
   await GetStorage.init();
   FlutterNativeSplash.removeAfter(afterInit);
   runApp(
