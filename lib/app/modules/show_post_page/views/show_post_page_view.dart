@@ -189,28 +189,11 @@ class ShowPostPageView extends GetWidget<ShowPostPageController> {
                           ),
                         ),
                       ),
-                      // Positioned(
-                      //   left: MySize.getWidth(20),
-                      //   right: MySize.getWidth(20),
-                      //   top: MySize.getHeight(185),
-                      //   child: Container(
-                      //     height: MySize.getHeight(400),
-                      //     width: MySize.getWidth(320),
-                      //     decoration: BoxDecoration(
-                      //       color: Colors.transparent,
-                      //       borderRadius: BorderRadius.circular(12),
-                      //       boxShadow: [
-                      //         BoxShadow(
-                      //             color: Color.fromRGBO(24, 24, 24, 0.12),
-                      //             spreadRadius: 2,
-                      //             blurRadius: 12,
-                      //             offset: Offset(
-                      //                 0, 12) // changes position of shadow
-                      //             ),
-                      //       ],
-                      //     ),
-                      //   ),
-                      // ),
+                      Positioned(
+                        bottom: MySize.getHeight(5),
+                        left: MySize.getWidth(25),
+                        child: getIt<AdService>().getBanners(),
+                      )
                     ],
                   )
                 : Center(
@@ -218,6 +201,7 @@ class ShowPostPageView extends GetWidget<ShowPostPageController> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
+                        Spacer(),
                         Container(
                           child: (controller.flickManager == null)
                               ? Center(
@@ -328,7 +312,12 @@ class ShowPostPageView extends GetWidget<ShowPostPageController> {
                               ),
                             ],
                           ),
-                        )
+                        ),
+                        Spacer(),
+                        getIt<AdService>().getBanners(),
+                        SizedBox(
+                          height: 5,
+                        ),
                       ],
                     ),
                   )),

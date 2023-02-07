@@ -22,8 +22,7 @@ class AllPostScreenView extends GetWidget<AllPostScreenController> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-
-          Get.offAllNamed(Routes.HOME);
+        Get.offAllNamed(Routes.HOME);
 
         return await true;
       },
@@ -40,9 +39,7 @@ class AllPostScreenView extends GetWidget<AllPostScreenController> {
             centerTitle: true,
             leading: GestureDetector(
               onTap: () async {
-
-                  Get.offAllNamed(Routes.HOME);
-
+                Get.offAllNamed(Routes.HOME);
               },
               child: Container(
                 padding: EdgeInsets.only(left: MySize.getWidth(10)),
@@ -180,6 +177,7 @@ class AllPostScreenView extends GetWidget<AllPostScreenController> {
                     stream: FireController().getPost(),
                   ),
                 ),
+                getIt<AdService>().getBanners(),
               ],
             ),
           ),

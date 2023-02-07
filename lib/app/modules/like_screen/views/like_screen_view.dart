@@ -22,8 +22,7 @@ class LikeScreenView extends GetView<LikeScreenController> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-
-          Get.offAllNamed(Routes.HOME);
+        Get.offAllNamed(Routes.HOME);
 
         return await true;
       },
@@ -43,9 +42,7 @@ class LikeScreenView extends GetView<LikeScreenController> {
             ),
             leading: GestureDetector(
               onTap: () async {
-
-                  Get.offAllNamed(Routes.HOME);
-
+                Get.offAllNamed(Routes.HOME);
               },
               child: Container(
                 padding: EdgeInsets.only(left: MySize.getWidth(10)),
@@ -227,6 +224,7 @@ class LikeScreenView extends GetView<LikeScreenController> {
                     stream: FireController().getDailyThought(),
                   ),
                 ),
+                getIt<AdService>().getBanners(),
               ],
             ),
           ),

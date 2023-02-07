@@ -15,6 +15,8 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../../../constants/firebase_controller.dart';
 import '../../../../constants/sizeConstant.dart';
+import '../../../../main.dart';
+import '../../../../utilities/ad_service.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
@@ -58,7 +60,7 @@ class HomeView extends GetView<HomeController> {
           padding: EdgeInsets.only(
               left: MySize.getWidth(4),
               right: MySize.getWidth(4),
-              top: MySize.getHeight(20)),
+              top: MySize.getHeight(5)),
           child: Column(
             children: [
               Expanded(
@@ -129,7 +131,9 @@ class HomeView extends GetView<HomeController> {
                                               horizontal: MySize.getWidth(15)),
                                           child: Column(
                                             children: [
-                                              Expanded(
+                                              Container(
+                                                height: MySize.getHeight(325),
+                                                width: MySize.getWidth(320),
                                                 child: (!isNullEmptyOrFalse(
                                                         dailyThought
                                                             .videoThumbnail))
@@ -385,11 +389,12 @@ class HomeView extends GetView<HomeController> {
                   stream: FireController().getDailyThought(),
                 ),
               ),
+              getIt<AdService>().getBanners(),
               Padding(
                 padding: EdgeInsets.only(
                     left: MySize.getWidth(10),
                     right: MySize.getWidth(10),
-                    top: MySize.getHeight(5)),
+                    top: MySize.getHeight(4)),
                 child: Column(
                   children: [
                     Row(
@@ -432,7 +437,9 @@ class HomeView extends GetView<HomeController> {
                       MySize.getHeight(10),
                     ),
                     Container(
-                      height: MySize.getHeight(268),
+                      height: (AdService.isVisible.isTrue)
+                          ? MySize.getHeight(240)
+                          : MySize.getHeight(275),
                       child: StreamBuilder<QuerySnapshot>(
                         builder: (context, data) {
                           if (data.connectionState == ConnectionState.waiting) {
@@ -571,7 +578,21 @@ class HomeView extends GetView<HomeController> {
               ),
               SizedBox(
                 height: MySize.getHeight(10),
-              )
+              ),
+              StreamBuilder<QuerySnapshot>(
+                builder: (context, data) {
+                  if (data.connectionState == ConnectionState.waiting) {
+                    return SizedBox();
+                  } else if (data.hasError) {
+                    print("object");
+                    return SizedBox();
+                  } else {
+                    AdService.isVisible.value = data.data!.docs[0]["isVisible"];
+                    return SizedBox();
+                  }
+                },
+                stream: FireController().adsVisible(),
+              ),
             ],
           ),
         ),
