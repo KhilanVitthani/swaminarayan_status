@@ -58,6 +58,7 @@ class SplashScreenController extends GetxController {
         Get.offAndToNamed(Routes.HOME);
       } else {
         Future.delayed(Duration(seconds: 5)).then((value) {
+          SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
           Get.offAndToNamed(Routes.HOME);
         });
       }

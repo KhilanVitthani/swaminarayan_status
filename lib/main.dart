@@ -21,16 +21,6 @@ initFireBaseApp() async {
   );
 }
 
-// @pragma('vm:entry-point')
-// Future<void> myBackgroundMessageHandler(RemoteMessage message) async {
-//   if (!isNullEmptyOrFalse(message)) {
-//     await Firebase.initializeApp();
-//     setUp();
-//     await getIt<NotificationService>().init(flutterLocalNotificationsPlugin);
-//     getIt<NotificationService>().showNotification(remoteMessage: message);
-//   }
-// }
-
 bool isFlutterLocalNotificationInitialize = false;
 final getIt = GetIt.instance;
 GetStorage box = GetStorage();
@@ -44,16 +34,12 @@ void main() async {
   OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
 
   OneSignal.shared.setAppId("ab0f47df-ef21-4e81-b62d-703da55d3672");
-
-// The promptForPushNotificationsWithUserResponse function will show the iOS or Android push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
   OneSignal.shared.promptUserForPushNotificationPermission().then((accepted) {
     print("Accepted permission: $accepted");
   });
   OneSignal.shared.setNotificationWillShowInForegroundHandler(
       (OSNotificationReceivedEvent event) {
     print(event.notification.body);
-    // Will be called whenever a notification is receiv ed in foreground
-    // Display Notification, pass null param for not displaying the notification
     event.complete(event.notification);
   });
   Yodo1MAS.instance.init(
