@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:688032127071:android:3920ea3363f28fe1c2e3ea",
+        "mobilesdk_app_id": "1:688032127071:android:41cb591bedc82af1c2e3ea",
         "android_client_info": {
-          "package_name": "com.mobileappxperts.swaminarayanstatus"
+          "package_name": "com.mobileappxperts.swaminarayanvideostatus"
         }
       },
       "oauth_client": [
