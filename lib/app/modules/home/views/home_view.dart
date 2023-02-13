@@ -539,7 +539,6 @@ class HomeView extends GetView<HomeController> {
                                 print("object");
                                 return SizedBox();
                               } else {
-                                controller.post.clear();
                                 for (int i = 0;
                                     i < data.data!.docs.length;
                                     i++) {
@@ -549,134 +548,158 @@ class HomeView extends GetView<HomeController> {
                                         .docs[data.data!.docs.length - i - 1]
                                         .data() as Map<String, dynamic>,
                                   );
-                                  controller.post.add(dataModel);
+                                  (controller.post.length >=
+                                          data.data!.docs.length)
+                                      ? null
+                                      : controller.post.add(dataModel);
                                 }
                                 print(controller.post.length);
-                                return SizedBox();
+                                return Container(
+                                  height: (AdService.isVisible.isTrue)
+                                      ? MySize.getHeight(240)
+                                      : MySize.getHeight(275),
+                                  child: Column(
+                                    children: [
+                                      Expanded(
+                                        child: Container(
+                                          child: GridView.builder(
+                                              shrinkWrap: true,
+                                              gridDelegate:
+                                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                                crossAxisCount: 3,
+                                                crossAxisSpacing:
+                                                    MySize.getHeight(2),
+                                                mainAxisSpacing:
+                                                    MySize.getHeight(2),
+                                              ),
+                                              itemBuilder: (context, index) {
+                                                if (controller.likeList
+                                                    .contains(controller
+                                                        .post[index].uId)) {
+                                                  controller.post[index]
+                                                      .isLiked!.value = true;
+                                                }
+                                                print(DateTime.now()
+                                                    .microsecondsSinceEpoch);
+                                                return GestureDetector(
+                                                  onTap: () {
+                                                    Get.toNamed(
+                                                        Routes.SHOW_POST_PAGE,
+                                                        arguments: {
+                                                          // ArgumentConstant.post:
+                                                          //     controller.post[index],
+                                                          ArgumentConstant
+                                                              .index: index,
+                                                          ArgumentConstant
+                                                              .isFromHome: true,
+                                                          ArgumentConstant
+                                                                  .isFromLike:
+                                                              false,
+                                                        });
+                                                  },
+                                                  child: Stack(
+                                                    children: [
+                                                      Container(
+                                                          height:
+                                                              MySize.safeHeight,
+                                                          width:
+                                                              MySize.safeWidth,
+                                                          color: Colors.black,
+                                                          child: getImageByLink(
+                                                              url: (!isNullEmptyOrFalse(
+                                                                      controller
+                                                                          .post[
+                                                                              index]
+                                                                          .videoThumbnail))
+                                                                  ? controller
+                                                                      .post[
+                                                                          index]
+                                                                      .videoThumbnail
+                                                                      .toString()
+                                                                  : controller
+                                                                      .post[
+                                                                          index]
+                                                                      .mediaLink
+                                                                      .toString(),
+                                                              height: MySize
+                                                                  .getHeight(
+                                                                      25),
+                                                              width: MySize
+                                                                  .getWidth(25),
+                                                              boxFit: BoxFit
+                                                                  .cover)),
+                                                      (!isNullEmptyOrFalse(
+                                                              controller
+                                                                  .post[index]
+                                                                  .videoThumbnail))
+                                                          ? Positioned(
+                                                              top: MySize
+                                                                  .getHeight(
+                                                                      10),
+                                                              right: MySize
+                                                                  .getHeight(
+                                                                      10),
+                                                              child: Container(
+                                                                child: SvgPicture.asset(
+                                                                    imagePath +
+                                                                        "video.svg",
+                                                                    color: Colors
+                                                                        .white),
+                                                                height: MySize
+                                                                    .getHeight(
+                                                                        25),
+                                                                width: MySize
+                                                                    .getWidth(
+                                                                        25),
+                                                              ),
+                                                            )
+                                                          : SizedBox(),
+                                                      Obx(() {
+                                                        return (!isNullEmptyOrFalse(
+                                                                controller
+                                                                    .post[index]
+                                                                    .isLiked!
+                                                                    .value))
+                                                            ? Positioned(
+                                                                bottom: MySize
+                                                                    .getHeight(
+                                                                        10),
+                                                                right: MySize
+                                                                    .getHeight(
+                                                                        10),
+                                                                child:
+                                                                    Container(
+                                                                  child: SvgPicture.asset(
+                                                                      imagePath +
+                                                                          "likeFill.svg",
+                                                                      color: Colors
+                                                                          .white),
+                                                                  height: MySize
+                                                                      .getHeight(
+                                                                          15),
+                                                                  width: MySize
+                                                                      .getWidth(
+                                                                          15),
+                                                                ),
+                                                              )
+                                                            : SizedBox();
+                                                      })
+                                                    ],
+                                                  ),
+                                                );
+                                              },
+                                              itemCount:
+                                                  (controller.post.length <= 15)
+                                                      ? controller.post.length
+                                                      : 15),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
                               }
                             },
                             stream: FireController().getPost(),
-                          ),
-                          Container(
-                            height: (AdService.isVisible.isTrue)
-                                ? MySize.getHeight(240)
-                                : MySize.getHeight(275),
-                            child: Column(
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                    child: GridView.builder(
-                                        shrinkWrap: true,
-                                        gridDelegate:
-                                            SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 3,
-                                          crossAxisSpacing: MySize.getHeight(2),
-                                          mainAxisSpacing: MySize.getHeight(2),
-                                        ),
-                                        itemBuilder: (context, index) {
-                                          if (controller.likeList.contains(
-                                              controller.post[index].uId)) {
-                                            controller.post[index].isLiked!
-                                                .value = true;
-                                          }
-                                          print(controller.post.length);
-
-                                          print(DateTime.now()
-                                              .microsecondsSinceEpoch);
-                                          return GestureDetector(
-                                            onTap: () {
-                                              Get.toNamed(Routes.SHOW_POST_PAGE,
-                                                  arguments: {
-                                                    ArgumentConstant.post:
-                                                        controller.post[index],
-                                                    ArgumentConstant.isFromHome:
-                                                        true,
-                                                    ArgumentConstant.isFromLike:
-                                                        false,
-                                                  });
-                                            },
-                                            child: Stack(
-                                              children: [
-                                                Container(
-                                                    height: MySize.safeHeight,
-                                                    width: MySize.safeWidth,
-                                                    color: Colors.black,
-                                                    child: getImageByLink(
-                                                        url: (!isNullEmptyOrFalse(
-                                                                controller
-                                                                    .post[index]
-                                                                    .videoThumbnail))
-                                                            ? controller
-                                                                .post[index]
-                                                                .videoThumbnail
-                                                                .toString()
-                                                            : controller
-                                                                .post[index]
-                                                                .mediaLink
-                                                                .toString(),
-                                                        height:
-                                                            MySize.getHeight(
-                                                                25),
-                                                        width:
-                                                            MySize.getWidth(25),
-                                                        boxFit: BoxFit.cover)),
-                                                (!isNullEmptyOrFalse(controller
-                                                        .post[index]
-                                                        .videoThumbnail))
-                                                    ? Positioned(
-                                                        top: MySize.getHeight(
-                                                            10),
-                                                        right: MySize.getHeight(
-                                                            10),
-                                                        child: Container(
-                                                          child: SvgPicture.asset(
-                                                              imagePath +
-                                                                  "video.svg",
-                                                              color:
-                                                                  Colors.white),
-                                                          height:
-                                                              MySize.getHeight(
-                                                                  25),
-                                                          width:
-                                                              MySize.getWidth(
-                                                                  25),
-                                                        ),
-                                                      )
-                                                    : SizedBox(),
-                                                (!isNullEmptyOrFalse(controller
-                                                        .post[index]
-                                                        .isLiked!
-                                                        .value))
-                                                    ? Positioned(
-                                                        bottom:
-                                                            MySize.getHeight(
-                                                                10),
-                                                        right: MySize.getHeight(
-                                                            10),
-                                                        child: Container(
-                                                          child: SvgPicture.asset(
-                                                              imagePath +
-                                                                  "likeFill.svg",
-                                                              color:
-                                                                  Colors.white),
-                                                          height:
-                                                              MySize.getHeight(
-                                                                  15),
-                                                          width:
-                                                              MySize.getWidth(
-                                                                  15),
-                                                        ),
-                                                      )
-                                                    : SizedBox(),
-                                              ],
-                                            ),
-                                          );
-                                        },
-                                        itemCount: controller.post.length),
-                                  ),
-                                ),
-                              ],
-                            ),
                           ),
                         ],
                       ),

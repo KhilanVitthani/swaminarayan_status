@@ -87,8 +87,8 @@ class ShowPostPageView extends GetWidget<ShowPostPageController> {
                     ],
                   ),
                   backgroundColor: Colors.white,
-                  body: (isNullEmptyOrFalse(
-                          controller.postData!.videoThumbnail))
+                  body: (isNullEmptyOrFalse(controller.homeController!
+                          .post[controller.Index.value].videoThumbnail))
                       ? Stack(
                           children: [
                             Padding(
@@ -97,7 +97,10 @@ class ShowPostPageView extends GetWidget<ShowPostPageController> {
                               child: Container(
                                 child: PhotoView.customChild(
                                   child: getImageByLink(
-                                      url: controller.postData!.mediaLink
+                                      url: controller
+                                          .homeController!
+                                          .post[controller.Index.value]
+                                          .mediaLink
                                           .toString(),
                                       boxFit: BoxFit.contain),
                                   initialScale: 1.0,
@@ -120,23 +123,40 @@ class ShowPostPageView extends GetWidget<ShowPostPageController> {
                                     Obx(() {
                                       return InkWell(
                                         onTap: () {
-                                          controller.postData!.isLiked!
+                                          controller
+                                              .homeController!
+                                              .post[controller.Index.value]
+                                              .isLiked!
                                               .toggle();
                                           if (controller
-                                              .postData!.isLiked!.isTrue) {
+                                              .homeController!
+                                              .post[controller.Index.value]
+                                              .isLiked!
+                                              .isTrue) {
                                             controller.addDataToLike(
-                                                data: controller.postData!.uId
+                                                data: controller
+                                                    .homeController!
+                                                    .post[
+                                                        controller.Index.value]
+                                                    .uId
                                                     .toString()
                                                     .trim());
                                           } else {
                                             controller.removeDataToLike(
-                                                data: controller.postData!.uId
+                                                data: controller
+                                                    .homeController!
+                                                    .post[
+                                                        controller.Index.value]
+                                                    .uId
                                                     .toString()
                                                     .trim());
                                           }
                                         },
                                         child: (controller
-                                                .postData!.isLiked!.isTrue)
+                                                .homeController!
+                                                .post[controller.Index.value]
+                                                .isLiked!
+                                                .isTrue)
                                             ? SvgPicture.asset(
                                                 imagePath + "likeFill.svg",
                                                 height: MySize.getHeight(23),
@@ -155,9 +175,13 @@ class ShowPostPageView extends GetWidget<ShowPostPageController> {
                                         controller.isFromDownload.value = true;
                                         controller.ads();
                                         if (isNullEmptyOrFalse(controller
-                                            .postData!.videoThumbnail)) {
+                                            .homeController!
+                                            .post[controller.Index.value]
+                                            .videoThumbnail)) {
                                           String path = controller
-                                              .postData!.mediaLink
+                                              .homeController!
+                                              .post[controller.Index.value]
+                                              .mediaLink
                                               .toString();
                                           print(path);
                                           GallerySaver.saveImage(path)
@@ -181,7 +205,9 @@ class ShowPostPageView extends GetWidget<ShowPostPageController> {
                                           ;
                                         } else {
                                           String path = controller
-                                              .postData!.mediaLink
+                                              .homeController!
+                                              .post[controller.Index.value]
+                                              .mediaLink
                                               .toString();
                                           print(path);
                                           GallerySaver.saveVideo(path)
@@ -281,23 +307,40 @@ class ShowPostPageView extends GetWidget<ShowPostPageController> {
                                     Obx(() {
                                       return GestureDetector(
                                         onTap: () {
-                                          controller.postData!.isLiked!
+                                          controller
+                                              .homeController!
+                                              .post[controller.Index.value]
+                                              .isLiked!
                                               .toggle();
                                           if (controller
-                                              .postData!.isLiked!.isTrue) {
+                                              .homeController!
+                                              .post[controller.Index.value]
+                                              .isLiked!
+                                              .isTrue) {
                                             controller.addDataToLike(
-                                                data: controller.postData!.uId
+                                                data: controller
+                                                    .homeController!
+                                                    .post[
+                                                        controller.Index.value]
+                                                    .uId
                                                     .toString()
                                                     .trim());
                                           } else {
                                             controller.removeDataToLike(
-                                                data: controller.postData!.uId
+                                                data: controller
+                                                    .homeController!
+                                                    .post[
+                                                        controller.Index.value]
+                                                    .uId
                                                     .toString()
                                                     .trim());
                                           }
                                         },
                                         child: (controller
-                                                .postData!.isLiked!.isTrue)
+                                                .homeController!
+                                                .post[controller.Index.value]
+                                                .isLiked!
+                                                .isTrue)
                                             ? SvgPicture.asset(
                                                 imagePath + "likeFill.svg",
                                                 height: MySize.getHeight(22.94),
@@ -318,7 +361,9 @@ class ShowPostPageView extends GetWidget<ShowPostPageController> {
                                         if (isNullEmptyOrFalse(controller
                                             .postData!.videoThumbnail)) {
                                           String path = controller
-                                              .postData!.mediaLink
+                                              .homeController!
+                                              .post[controller.Index.value]
+                                              .mediaLink
                                               .toString();
                                           print(path);
                                           GallerySaver.saveImage(path)
@@ -342,7 +387,9 @@ class ShowPostPageView extends GetWidget<ShowPostPageController> {
                                           ;
                                         } else {
                                           String path = controller
-                                              .postData!.mediaLink
+                                              .homeController!
+                                              .post[controller.Index.value]
+                                              .mediaLink
                                               .toString();
                                           print(path);
                                           GallerySaver.saveVideo(path)
@@ -380,8 +427,10 @@ class ShowPostPageView extends GetWidget<ShowPostPageController> {
                                             .showCircularDialog(context);
                                         File? file;
                                         await DefaultCacheManager()
-                                            .getSingleFile(
-                                                controller.postData!.mediaLink!)
+                                            .getSingleFile(controller
+                                                .homeController!
+                                                .post[controller.Index.value]
+                                                .mediaLink!)
                                             .then((value) {
                                           getIt<CustomDialogs>()
                                               .hideCircularDialog(context);

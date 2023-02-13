@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:get_storage/get_storage.dart';
 import 'package:swaminarayan_status/app/models/daily_thought_model.dart';
 import 'package:swaminarayan_status/app/modules/home/controllers/home_controller.dart';
 import 'package:swaminarayan_status/constants/api_constants.dart';
@@ -29,22 +30,24 @@ class ShowPostPageController extends GetxController {
   @override
   void onInit() {
     if (Get.arguments != null) {
-      postData = Get.arguments[ArgumentConstant.post];
+      // postData = Get.arguments[ArgumentConstant.post];
+      Index.value = Get.arguments[ArgumentConstant.index];
       isFromHome.value = Get.arguments[ArgumentConstant.isFromHome];
       isFromLike.value = Get.arguments[ArgumentConstant.isFromLike];
+      print(Index);
     }
     Get.lazyPut(() => HomeController());
     homeController = Get.find<HomeController>();
-    if (!isNullEmptyOrFalse(postData!.videoThumbnail)) {
+    if (!isNullEmptyOrFalse(homeController!.post[Index.value].videoThumbnail)) {
       flickManager = FlickManager(
-        videoPlayerController:
-            VideoPlayerController.network(postData!.mediaLink!),
+        videoPlayerController: VideoPlayerController.network(
+            homeController!.post[Index.value].mediaLink!),
       ).obs;
     }
     if (!isNullEmptyOrFalse(box.read(ArgumentConstant.likeList))) {
       likeList = (jsonDecode(box.read(ArgumentConstant.likeList))).toList();
-      if (likeList.contains(postData!.uId)) {
-        postData!.isLiked!.value = true;
+      if (likeList.contains(homeController!.post[Index.value].uId)) {
+        homeController!.post[Index.value].isLiked!.value = true;
       }
     }
     if (getIt<TimerService>().is40SecCompleted) {
@@ -104,19 +107,22 @@ class ShowPostPageController extends GetxController {
   }) {
     likeList.add(data);
     box.write(ArgumentConstant.likeList, jsonEncode(likeList));
+    homeController!.post[Index.value].isLiked!.value = true;
     print(box.read(ArgumentConstant.likeList));
   }
 
   removeDataToLike({required String data}) {
     likeList.remove(data);
     box.write(ArgumentConstant.likeList, jsonEncode(likeList));
+    homeController!.post[Index.value].isLiked!.value = false;
+
     print(box.read(ArgumentConstant.likeList));
   }
 
   @override
   void onClose() {
     super.onClose();
-    if (!isNullEmptyOrFalse(postData!.videoThumbnail)) {
+    if (!isNullEmptyOrFalse(homeController!.post[Index.value].videoThumbnail)) {
       flickManager!.value.dispose();
     }
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
