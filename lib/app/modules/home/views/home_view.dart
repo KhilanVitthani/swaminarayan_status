@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:swaminarayan_status/app/models/daily_thought_model.dart';
 import 'package:swaminarayan_status/app/routes/app_pages.dart';
 import 'package:swaminarayan_status/constants/api_constants.dart';
@@ -146,7 +149,7 @@ class HomeView extends GetView<HomeController> {
                                             child: Column(
                                               children: [
                                                 Container(
-                                                  height: MySize.getHeight(325),
+                                                  height: MySize.getHeight(315),
                                                   width: MySize.getWidth(320),
                                                   child: (!isNullEmptyOrFalse(
                                                           dailyThought
@@ -375,10 +378,9 @@ class HomeView extends GetView<HomeController> {
                                                             MySize.getWidth(25),
                                                       ),
                                                       GestureDetector(
-                                                        onTap: () {
-                                                          Share.share(
-                                                              dailyThought
-                                                                  .mediaLink!);
+                                                        onTap: () async {
+                                                          File file = await DefaultCacheManager().getSingleFile( dailyThought.mediaLink!);
+                                                          Share.shareFiles([file.path]);
                                                         },
                                                         child: SvgPicture.asset(
                                                           imagePath +
