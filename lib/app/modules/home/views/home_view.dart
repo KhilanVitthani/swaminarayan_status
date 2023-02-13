@@ -255,7 +255,7 @@ class HomeView extends GetView<HomeController> {
                                                             MySize.getWidth(14),
                                                       ),
                                                       Obx(() {
-                                                        return GestureDetector(
+                                                        return InkWell(
                                                           onTap: () {
                                                             dailyThought
                                                                 .isLiked!

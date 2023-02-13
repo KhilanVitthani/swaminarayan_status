@@ -109,7 +109,7 @@ class ShowPostPageView extends GetWidget<ShowPostPageController> {
                                 width: MySize.getWidth(14),
                               ),
                               Obx(() {
-                                return GestureDetector(
+                                return InkWell(
                                   onTap: () {
                                     controller.postData!.isLiked!.toggle();
                                     if (controller.postData!.isLiked!.isTrue) {
@@ -127,11 +127,11 @@ class ShowPostPageView extends GetWidget<ShowPostPageController> {
                                   child: (controller.postData!.isLiked!.isTrue)
                                       ? SvgPicture.asset(
                                           imagePath + "likeFill.svg",
-                                          height: MySize.getHeight(22.94),
+                                          height: MySize.getHeight(23),
                                         )
                                       : SvgPicture.asset(
                                           imagePath + "like.svg",
-                                          height: MySize.getHeight(22.94),
+                                          height: MySize.getHeight(23),
                                         ),
                                 );
                               }),
