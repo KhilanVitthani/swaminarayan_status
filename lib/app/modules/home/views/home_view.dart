@@ -333,7 +333,20 @@ class HomeView extends GetView<HomeController> {
                                                                           .white,
                                                                   fontSize:
                                                                       16.0);
-                                                            });
+                                                            }).catchError((error){
+                                                              Fluttertoast.showToast(
+                                                                  msg: "Something went wrong!",
+                                                                  toastLength: Toast
+                                                                      .LENGTH_SHORT,
+                                                                  gravity:
+                                                                  ToastGravity
+                                                                      .BOTTOM,
+                                                                  timeInSecForIosWeb:
+                                                                  1,
+                                                                  textColor:
+                                                                  Colors.white,
+                                                                  fontSize: 16.0);
+                                                            });;
                                                           } else {
                                                             String path =
                                                                 dailyThought
@@ -359,9 +372,19 @@ class HomeView extends GetView<HomeController> {
                                                                           .white,
                                                                   fontSize:
                                                                       16.0);
-                                                            }).catchError(
-                                                                    (error) {
-                                                              print(error);
+                                                            }).catchError((error){
+                                                              Fluttertoast.showToast(
+                                                                  msg: "Something went wrong!",
+                                                                  toastLength: Toast
+                                                                      .LENGTH_SHORT,
+                                                                  gravity:
+                                                                  ToastGravity
+                                                                      .BOTTOM,
+                                                                  timeInSecForIosWeb:
+                                                                  1,
+                                                                  textColor:
+                                                                  Colors.white,
+                                                                  fontSize: 16.0);
                                                             });
                                                           }
                                                         },
