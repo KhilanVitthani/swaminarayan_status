@@ -12,10 +12,18 @@ import 'package:yodo1mas/Yodo1MAS.dart';
 import '../../../../utilities/ad_service.dart';
 
 class SplashScreenController extends GetxController {
+  RxBool isFirstTime = false.obs;
   @override
   void onInit() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      await time();
+      if (box.read(ArgumentConstant.isFirstTime) != null) {
+        isFirstTime.value = box.read(ArgumentConstant.isFirstTime);
+      }
+      if (isFirstTime.value) {
+        Get.offAllNamed(Routes.HOME);
+      } else {
+        await ads();
+      }
       Yodo1MAS.instance.setInterstitialListener((event, message) {
         switch (event) {
           case Yodo1MAS.AD_EVENT_OPENED:

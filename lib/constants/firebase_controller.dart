@@ -38,6 +38,7 @@ class FireController {
 
   Future<void> addData() async {
     String uId = _postCollectionReferance.doc().id;
+    print(uId);
     return await _postCollectionReferance.doc(uId).set({
       "dateTime": DateTime.now().millisecondsSinceEpoch,
       //  "${int.parse(DateTime.now().millisecondsSinceEpoch.toString())}",

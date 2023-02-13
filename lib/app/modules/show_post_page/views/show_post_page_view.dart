@@ -19,6 +19,7 @@ import '../../../../constants/api_constants.dart';
 import '../../../../constants/sizeConstant.dart';
 import '../../../../main.dart';
 import '../../../../utilities/ad_service.dart';
+import '../../../../utilities/progress_dialog_utils.dart';
 import '../../../../utilities/timer_service.dart';
 import '../../../routes/app_pages.dart';
 import '../controllers/show_post_page_controller.dart';
@@ -29,10 +30,11 @@ class ShowPostPageView extends GetWidget<ShowPostPageController> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
+        getIt<CustomDialogs>().hideCircularDialog(context);
         (controller.isFromLike.isTrue)
             ? Get.offAndToNamed(Routes.LIKE_SCREEN)
             : (controller.isFromHome.isTrue)
-                ? Get.offAllNamed(Routes.HOME)
+                ? Get.back()
                 : Get.offAndToNamed(Routes.ALL_POST_SCREEN);
         return await true;
       },
@@ -55,7 +57,7 @@ class ShowPostPageView extends GetWidget<ShowPostPageController> {
                   (controller.isFromLike.isTrue)
                       ? Get.offAndToNamed(Routes.LIKE_SCREEN)
                       : (controller.isFromHome.isTrue)
-                          ? Get.offAllNamed(Routes.HOME)
+                          ? Get.back()
                           : Get.offAndToNamed(Routes.ALL_POST_SCREEN);
                 },
                 child: Container(
@@ -207,8 +209,23 @@ class ShowPostPageView extends GetWidget<ShowPostPageController> {
                               ),
                               GestureDetector(
                                 onTap: () async {
-                                  File file = await DefaultCacheManager().getSingleFile( controller.postData!.mediaLink!);
-                                  Share.shareFiles([file.path]);
+                                  getIt<
+                                      CustomDialogs>()
+                                      .showCircularDialog(
+                                      context);
+                                  File? file;
+                                  await DefaultCacheManager()
+                                      .getSingleFile(
+                                      controller.postData
+                                          !.mediaLink!)
+                                      .then((value) {
+                                    getIt<
+                                        CustomDialogs>()
+                                        .hideCircularDialog(
+                                        context);
+                                    file = value;
+                                  });
+                                  Share.shareFiles([file!.path]);
                                 },
                                 child: SvgPicture.asset(
                                   imagePath + "share.svg",
@@ -359,8 +376,25 @@ class ShowPostPageView extends GetWidget<ShowPostPageController> {
                               ),
                               GestureDetector(
                                 onTap: () async {
-                                  File file = await DefaultCacheManager().getSingleFile( controller.postData!.mediaLink!);
-                                  Share.shareFiles([file.path]);
+                                  getIt<
+                                    CustomDialogs>()
+                                    .showCircularDialog(
+                                    context);
+                                File? file;
+                                await DefaultCacheManager()
+                                    .getSingleFile(
+                                    controller.postData
+                                    !.mediaLink!)
+                                    .then((value) {
+                                  getIt<
+                                      CustomDialogs>()
+                                      .hideCircularDialog(
+                                      context);
+                                  file = value;
+                                }).catchError((error){
+                                  print(error);
+                                });
+                                Share.shareFiles([file!.path]);
                                 },
                                 child: SvgPicture.asset(
                                   imagePath + "share.svg",

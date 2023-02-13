@@ -40,6 +40,9 @@ class ShowPostPageController extends GetxController {
     }
     if (!isNullEmptyOrFalse(box.read(ArgumentConstant.likeList))) {
       likeList = (jsonDecode(box.read(ArgumentConstant.likeList))).toList();
+      if(likeList.contains(postData!.uId)){
+        postData!.isLiked!.value = true;
+      }
     }
     if (getIt<TimerService>().is40SecCompleted) {
       ads();

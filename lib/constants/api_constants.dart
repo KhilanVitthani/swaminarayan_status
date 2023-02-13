@@ -12,6 +12,7 @@ class ArgumentConstant {
   static const isFromHome = "isFromHome";
   static const isFromLike = "isFromLike";
   static const isFromSplash = "isFromSplash";
+  static const isFirstTime = "isFirstTime";
 }
 
 getLogOut() {

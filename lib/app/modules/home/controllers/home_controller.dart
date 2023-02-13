@@ -34,6 +34,7 @@ class HomeController extends GetxController {
     //     }
     //   }
     // });
+    box.write(ArgumentConstant.isFirstTime, false);
     if (!isNullEmptyOrFalse(box.read(ArgumentConstant.likeList))) {
       likeList = (jsonDecode(box.read(ArgumentConstant.likeList))).toList();
     }

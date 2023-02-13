@@ -22,7 +22,7 @@ class AllPostScreenView extends GetWidget<AllPostScreenController> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        Get.offAllNamed(Routes.HOME);
+        Get.back();
 
         return await true;
       },
@@ -39,7 +39,7 @@ class AllPostScreenView extends GetWidget<AllPostScreenController> {
             centerTitle: true,
             leading: GestureDetector(
               onTap: () async {
-                Get.offAllNamed(Routes.HOME);
+                Get.back();
               },
               child: Container(
                 padding: EdgeInsets.only(left: MySize.getWidth(10)),
