@@ -18,6 +18,7 @@ import '../controllers/like_screen_controller.dart';
 
 class LikeScreenView extends GetView<LikeScreenController> {
   const LikeScreenView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -26,117 +27,120 @@ class LikeScreenView extends GetView<LikeScreenController> {
 
         return await true;
       },
-      child: SafeArea(
-        child: Scaffold(
-          backgroundColor: Colors.white,
-          appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            title: Text(
-              'My Favorite Quotes',
-              style: TextStyle(
-                fontSize: MySize.getHeight(26),
-                fontWeight: FontWeight.w700,
-                color: appTheme.primaryTheme,
+      child: GetBuilder<LikeScreenController>(init: LikeScreenController(),builder: (controller) {
+        return SafeArea(
+          child: Scaffold(
+            backgroundColor: Colors.white,
+            appBar: AppBar(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              title: Text(
+                'My Favorite Quotes',
+                style: TextStyle(
+                  fontSize: MySize.getHeight(26),
+                  fontWeight: FontWeight.w700,
+                  color: appTheme.primaryTheme,
+                ),
               ),
-            ),
-            leading: GestureDetector(
-              onTap: () async {
-                Get.offAllNamed(Routes.HOME);
-              },
-              child: Container(
-                padding: EdgeInsets.only(left: MySize.getWidth(10)),
-                child: Icon(Icons.arrow_back, color: appTheme.primaryTheme),
+              leading: GestureDetector(
+                onTap: () async {
+                  Get.offAllNamed(Routes.HOME);
+                },
+                child: Container(
+                  padding: EdgeInsets.only(left: MySize.getWidth(10)),
+                  child: Icon(Icons.arrow_back, color: appTheme.primaryTheme),
+                ),
               ),
+              centerTitle: true,
             ),
-            centerTitle: true,
-          ),
-          body: Padding(
-            padding: EdgeInsets.symmetric(horizontal: MySize.getWidth(8)),
-            child: Column(
-              children: [
-                Expanded(
-                  child: StreamBuilder<QuerySnapshot>(
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        print("object");
-                        return Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasError) {
-                        print("object");
-                        return Text(
-                          "Error",
-                          style: TextStyle(color: Colors.amber),
-                        );
-                      } else {
-                        controller.likePost.clear();
-                        controller.post.clear();
-                        var data = snapshot.data!.docs;
-                        if (!isNullEmptyOrFalse(data)) {
-                          data.forEach((element) {
-                            if (controller.likeList.contains(element.id)) {
-                              controller.post.add(dailyThoughtModel.fromJson(
-                                  element.data() as Map<String, dynamic>));
-                            }
-                          });
-                        }
-
-                        return StreamBuilder<QuerySnapshot>(
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              print("object");
-                              return Center(child: CircularProgressIndicator());
-                            } else if (snapshot.hasError) {
-                              print("object");
-                              return Text(
-                                "Error",
-                                style: TextStyle(color: Colors.amber),
-                              );
-                            } else {
-                              var data = snapshot.data!.docs;
-                              if (!isNullEmptyOrFalse(data)) {
-                                data.forEach((element) {
-                                  if (controller.likeList
-                                      .contains(element.id)) {
-                                    controller.post.add(dailyThoughtModel
-                                        .fromJson(element.data()
-                                            as Map<String, dynamic>));
-                                  }
-                                });
+            body: Padding(
+              padding: EdgeInsets.symmetric(horizontal: MySize.getWidth(8)),
+              child: Column(
+                children: [
+                  Expanded(
+                    child: StreamBuilder<QuerySnapshot>(
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          print("object");
+                          return Center(child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          print("object");
+                          return Text(
+                            "Error",
+                            style: TextStyle(color: Colors.amber),
+                          );
+                        } else {
+                          controller.likePost.clear();
+                          controller.post.clear();
+                          var data = snapshot.data!.docs;
+                          if (!isNullEmptyOrFalse(data)) {
+                            data.forEach((element) {
+                              if (controller.likeList.contains(element.id)) {
+                                controller.post.add(dailyThoughtModel.fromJson(
+                                    element.data() as Map<String, dynamic>));
                               }
-                              controller.likePost.value =
-                                  controller.post.reversed.toList();
-                              return Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  (isNullEmptyOrFalse(controller.likePost))
-                                      ? Column(
-                                          children: [
-                                            Center(
-                                                child: Image.asset(
+                            });
+                          }
+
+                          return StreamBuilder<QuerySnapshot>(
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                print("object");
+                                return Center(
+                                    child: CircularProgressIndicator());
+                              } else if (snapshot.hasError) {
+                                print("object");
+                                return Text(
+                                  "Error",
+                                  style: TextStyle(color: Colors.amber),
+                                );
+                              } else {
+                                var data = snapshot.data!.docs;
+                                if (!isNullEmptyOrFalse(data)) {
+                                  data.forEach((element) {
+                                    if (controller.likeList
+                                        .contains(element.id)) {
+                                      controller.post.add(dailyThoughtModel
+                                          .fromJson(element.data()
+                                      as Map<String, dynamic>));
+                                    }
+                                  });
+                                }
+                                controller.likePost.value =
+                                    controller.post.reversed.toList();
+                                return Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    (isNullEmptyOrFalse(controller.likePost))
+                                        ? Column(
+                                      children: [
+                                        Center(
+                                            child: Image.asset(
                                               imagePath + "nodata.png",
                                               height: 100,
                                               width: 100,
                                             )),
-                                            Text(
-                                              "No Data Found",
-                                              style: TextStyle(
-                                                  color: appTheme.primaryTheme,
-                                                  fontWeight: FontWeight.w700),
-                                            ),
-                                          ],
-                                        )
-                                      : Expanded(
-                                          child: GridView.builder(
+                                        Text(
+                                          "No Data Found",
+                                          style: TextStyle(
+                                              color: appTheme.primaryTheme,
+                                              fontWeight: FontWeight.w700),
+                                        ),
+                                      ],
+                                    )
+                                        : Expanded(
+                                        child: GridView.builder(
                                           itemCount: controller.likePost.length,
                                           gridDelegate:
-                                              SliverGridDelegateWithFixedCrossAxisCount(
+                                          SliverGridDelegateWithFixedCrossAxisCount(
                                             crossAxisCount: 3,
                                             crossAxisSpacing:
-                                                MySize.getHeight(2),
+                                            MySize.getHeight(2),
                                             mainAxisSpacing:
-                                                MySize.getHeight(2),
+                                            MySize.getHeight(2),
                                           ),
                                           itemBuilder: (context, index) {
                                             controller.likePost
@@ -149,8 +153,8 @@ class LikeScreenView extends GetView<LikeScreenController> {
                                                     Routes.SHOW_POST_PAGE,
                                                     arguments: {
                                                       ArgumentConstant.post:
-                                                          controller
-                                                              .likePost[index],
+                                                      controller
+                                                          .likePost[index],
                                                       ArgumentConstant
                                                           .isFromHome: false,
                                                       ArgumentConstant
@@ -165,71 +169,72 @@ class LikeScreenView extends GetView<LikeScreenController> {
                                                       color: Colors.black,
                                                       child: getImageByLink(
                                                           url: (!isNullEmptyOrFalse(
-                                                                  controller
-                                                                      .likePost[
-                                                                          index]
-                                                                      .videoThumbnail))
+                                                              controller
+                                                                  .likePost[
+                                                              index]
+                                                                  .videoThumbnail))
                                                               ? controller
-                                                                  .likePost[
-                                                                      index]
-                                                                  .videoThumbnail
-                                                                  .toString()
+                                                              .likePost[
+                                                          index]
+                                                              .videoThumbnail
+                                                              .toString()
                                                               : controller
-                                                                  .likePost[
-                                                                      index]
-                                                                  .mediaLink
-                                                                  .toString(),
+                                                              .likePost[
+                                                          index]
+                                                              .mediaLink
+                                                              .toString(),
                                                           height:
-                                                              MySize.getHeight(
-                                                                  25),
+                                                          MySize.getHeight(
+                                                              25),
                                                           width:
-                                                              MySize.getWidth(
-                                                                  25),
+                                                          MySize.getWidth(
+                                                              25),
                                                           boxFit:
-                                                              BoxFit.cover)),
+                                                          BoxFit.cover)),
                                                   (!isNullEmptyOrFalse(
-                                                          controller
-                                                              .likePost[index]
-                                                              .videoThumbnail))
+                                                      controller
+                                                          .likePost[index]
+                                                          .videoThumbnail))
                                                       ? Positioned(
-                                                          top: MySize.getHeight(
-                                                              10),
-                                                          right:
-                                                              MySize.getHeight(
-                                                                  10),
-                                                          child: Container(
-                                                            child: SvgPicture.asset(
-                                                                imagePath +
-                                                                    "video.svg",
-                                                                color: Colors
-                                                                    .white),
-                                                            height: 25,
-                                                            width: 25,
-                                                          ),
-                                                        )
+                                                    top: MySize.getHeight(
+                                                        10),
+                                                    right:
+                                                    MySize.getHeight(
+                                                        10),
+                                                    child: Container(
+                                                      child: SvgPicture.asset(
+                                                          imagePath +
+                                                              "video.svg",
+                                                          color: Colors
+                                                              .white),
+                                                      height: 25,
+                                                      width: 25,
+                                                    ),
+                                                  )
                                                       : SizedBox(),
                                                 ],
                                               ),
                                             );
                                           },
                                         )),
-                                ],
-                              );
-                            }
-                          },
-                          stream: FireController().getPost(),
-                        );
-                      }
-                    },
-                    stream: FireController().getDailyThought(),
+                                  ],
+                                );
+                              }
+                            },
+                            stream: FireController().getPost(),
+                          );
+                        }
+                      },
+                      stream: FireController().getDailyThought(),
+                    ),
                   ),
-                ),
-                getIt<AdService>().getBanners(),
-              ],
+                  getIt<AdService>().getBanners(),
+                ],
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 }
