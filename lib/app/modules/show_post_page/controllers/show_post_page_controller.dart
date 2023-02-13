@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:swaminarayan_status/app/models/daily_thought_model.dart';
+import 'package:swaminarayan_status/app/modules/home/controllers/home_controller.dart';
 import 'package:swaminarayan_status/constants/api_constants.dart';
 import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter/services.dart';
@@ -23,15 +24,17 @@ class ShowPostPageController extends GetxController {
   RxBool isFromLike = false.obs;
   RxBool isFromDownload = false.obs;
   List likeList = [];
-
+  HomeController? homeController;
+  RxInt Index = 0.obs;
   @override
   void onInit() {
     if (Get.arguments != null) {
       postData = Get.arguments[ArgumentConstant.post];
       isFromHome.value = Get.arguments[ArgumentConstant.isFromHome];
       isFromLike.value = Get.arguments[ArgumentConstant.isFromLike];
-      print(postData!.videoThumbnail);
     }
+    Get.lazyPut(() => HomeController());
+    homeController = Get.find<HomeController>();
     if (!isNullEmptyOrFalse(postData!.videoThumbnail)) {
       flickManager = FlickManager(
         videoPlayerController:
@@ -40,7 +43,7 @@ class ShowPostPageController extends GetxController {
     }
     if (!isNullEmptyOrFalse(box.read(ArgumentConstant.likeList))) {
       likeList = (jsonDecode(box.read(ArgumentConstant.likeList))).toList();
-      if(likeList.contains(postData!.uId)){
+      if (likeList.contains(postData!.uId)) {
         postData!.isLiked!.value = true;
       }
     }
@@ -68,6 +71,7 @@ class ShowPostPageController extends GetxController {
     });
     super.onInit();
   }
+
   //
   Future<void> ads() async {
     await getIt<AdService>()
