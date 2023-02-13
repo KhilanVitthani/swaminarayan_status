@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:swaminarayan_status/app/modules/home/controllers/home_controller.dart';
 import 'package:yodo1mas/Yodo1MAS.dart';
 
 import '../../../../constants/api_constants.dart';
@@ -13,12 +14,14 @@ import '../../../routes/app_pages.dart';
 
 class AllPostScreenController extends GetxController {
   List likeList = [];
-
+  HomeController? homeController;
   @override
   void onInit() {
     if (!isNullEmptyOrFalse(box.read(ArgumentConstant.likeList))) {
       likeList = (jsonDecode(box.read(ArgumentConstant.likeList))).toList();
     }
+    Get.lazyPut(() => HomeController());
+    homeController = Get.find<HomeController>();
 
     if (getIt<TimerService>().is40SecCompleted) {
       ads();
