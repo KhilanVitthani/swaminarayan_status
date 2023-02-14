@@ -8,13 +8,14 @@ class dailyThoughtModel {
   String? videoThumbnail;
   int? dateTime;
   RxBool? isLiked = false.obs;
+  RxBool? isDaily = false.obs;
 
   dailyThoughtModel(
       {required this.mediaLink,
       required this.videoThumbnail,
       required this.uId,
       required this.dateTime,
-      this.isLiked});
+      this.isLiked,this.isDaily,});
 
   dailyThoughtModel.fromJson(Map<String, dynamic> json) {
     mediaLink = json['mediaLink'];
@@ -22,6 +23,8 @@ class dailyThoughtModel {
     uId = json["uId"];
     dateTime = json["dateTime"];
     isLiked!.value =
+        (!isNullEmptyOrFalse(json["isLiked"])) ? json["isLiked"] : false;
+    isDaily!.value =
         (!isNullEmptyOrFalse(json["isLiked"])) ? json["isLiked"] : false;
   }
 
@@ -32,6 +35,7 @@ class dailyThoughtModel {
     data['videoThumbnail'] = this.videoThumbnail;
     data['dateTime'] = this.dateTime;
     data['isLiked'] = this.isLiked;
+    data['isDaily'] = this.isDaily;
     return data;
   }
 }

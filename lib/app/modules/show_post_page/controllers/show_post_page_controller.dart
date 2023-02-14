@@ -105,17 +105,25 @@ class ShowPostPageController extends GetxController {
   addDataToLike({
     required String data,
   }) {
+    if(!likeList.contains(data)){
     likeList.add(data);
+    }
     box.write(ArgumentConstant.likeList, jsonEncode(likeList));
     homeController!.post[Index.value].isLiked!.value = true;
+    update();
+
     print(box.read(ArgumentConstant.likeList));
   }
 
   removeDataToLike({required String data}) {
+    if(likeList.contains(data)){
+
     likeList.remove(data);
+    }
+
     box.write(ArgumentConstant.likeList, jsonEncode(likeList));
     homeController!.post[Index.value].isLiked!.value = false;
-
+update();
     print(box.read(ArgumentConstant.likeList));
   }
 

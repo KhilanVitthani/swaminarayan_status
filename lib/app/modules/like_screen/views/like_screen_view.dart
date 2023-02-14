@@ -23,11 +23,12 @@ class LikeScreenView extends GetView<LikeScreenController> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        Get.offAllNamed(Routes.HOME);
+        Get.toNamed(Routes.HOME);
 
         return await true;
       },
-      child: GetBuilder<LikeScreenController>(init: LikeScreenController(),builder: (controller) {
+      child: GetBuilder<LikeScreenController>(
+          init: LikeScreenController(), builder: (controller) {
         return SafeArea(
           child: Scaffold(
             backgroundColor: Colors.white,
@@ -44,7 +45,7 @@ class LikeScreenView extends GetView<LikeScreenController> {
               ),
               leading: GestureDetector(
                 onTap: () async {
-                  Get.offAllNamed(Routes.HOME);
+                  Get.toNamed(Routes.HOME);
                 },
                 child: Container(
                   padding: EdgeInsets.only(left: MySize.getWidth(10)),
@@ -58,175 +59,143 @@ class LikeScreenView extends GetView<LikeScreenController> {
               child: Column(
                 children: [
                   Expanded(
-                    child: StreamBuilder<QuerySnapshot>(
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          print("object");
-                          return Center(child: CircularProgressIndicator());
-                        } else if (snapshot.hasError) {
-                          print("object");
-                          return Text(
-                            "Error",
-                            style: TextStyle(color: Colors.amber),
-                          );
-                        } else {
-                          controller.likePost.clear();
-                          controller.post.clear();
-                          var data = snapshot.data!.docs;
-                          if (!isNullEmptyOrFalse(data)) {
-                            data.forEach((element) {
-                              if (controller.likeList.contains(element.id)) {
-                                controller.post.add(dailyThoughtModel.fromJson(
-                                    element.data() as Map<String, dynamic>));
-                              }
-                            });
-                          }
-
-                          return StreamBuilder<QuerySnapshot>(
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                print("object");
-                                return Center(
-                                    child: CircularProgressIndicator());
-                              } else if (snapshot.hasError) {
-                                print("object");
-                                return Text(
-                                  "Error",
-                                  style: TextStyle(color: Colors.amber),
-                                );
-                              } else {
-                                var data = snapshot.data!.docs;
-                                if (!isNullEmptyOrFalse(data)) {
-                                  data.forEach((element) {
-                                    if (controller.likeList
-                                        .contains(element.id)) {
-                                      controller.post.add(dailyThoughtModel
-                                          .fromJson(element.data()
-                                      as Map<String, dynamic>));
+                    child: Obx(() {
+                      return Container(
+                        child: (controller.homeController!
+                            .post
+                            .where((e) => e.isLiked!.isTrue)
+                            .toList()
+                            .length == 0) ? Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Center(
+                                child: Image.asset(
+                                  imagePath + "nodata.png",
+                                  height: 100,
+                                  width: 100,
+                                )),
+                            Text(
+                              "No Data Found",
+                              style: TextStyle(
+                                  color: appTheme.primaryTheme,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                          ],
+                        ) : GridView.builder(
+                            shrinkWrap: true,
+                            gridDelegate:
+                            SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3,
+                              crossAxisSpacing: MySize.getHeight(2),
+                              mainAxisSpacing: MySize.getHeight(2),
+                            ),
+                            itemBuilder: (context, index) {
+                              // if (controller.likeList.contains(controller.homeController!.post.where((e) => e.isLiked!.isTrue).toList()[index].uId)) {
+                              //   controller.homeController!.post.where((e) => e.isLiked!.isTrue).toList()[index]
+                              //       .isLiked!.value = true;
+                              // }
+                              print(DateTime
+                                  .now()
+                                  .microsecondsSinceEpoch);
+                              return GestureDetector(
+                                onTap: () {
+                                  int i = 0;
+                                  int Index = 0;
+                                  controller.homeController!.post.forEach((
+                                      element) {
+                                    if (element.uId ==
+                                        controller.homeController!.post.where((
+                                            e) =>
+                                        e.isLiked!.isTrue)
+                                            .toList()[index].uId) {
+                                      Index = i;
                                     }
+                                    i++;
                                   });
-                                }
-                                controller.likePost.value =
-                                    controller.post.reversed.toList();
-                                return Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  Get.toNamed(
+                                      Routes.SHOW_POST_PAGE,
+                                      arguments: {
+                                        ArgumentConstant.index: Index,
+                                        ArgumentConstant
+                                            .isFromHome: false,
+                                        ArgumentConstant
+                                            .isFromLike: true,
+                                      });
+                                },
+                                child: Stack(
                                   children: [
-                                    (isNullEmptyOrFalse(controller.likePost))
-                                        ? Column(
-                                      children: [
-                                        Center(
-                                            child: Image.asset(
-                                              imagePath + "nodata.png",
-                                              height: 100,
-                                              width: 100,
-                                            )),
-                                        Text(
-                                          "No Data Found",
-                                          style: TextStyle(
-                                              color: appTheme.primaryTheme,
-                                              fontWeight: FontWeight.w700),
-                                        ),
-                                      ],
+                                    Container(
+                                        height: MySize.safeHeight,
+                                        width: MySize.safeWidth,
+                                        color: Colors.black,
+                                        child: getImageByLink(
+                                            url: (!isNullEmptyOrFalse(
+                                                controller.homeController!.post
+                                                    .where((e) =>
+                                                e.isLiked!.isTrue)
+                                                    .toList()[index]
+                                                    .videoThumbnail))
+                                                ? controller.homeController!
+                                                .post.where((e) =>
+                                            e.isLiked!.isTrue).toList()[index]
+                                                .videoThumbnail
+                                                .toString()
+                                                : controller.homeController!
+                                                .post.where((e) =>
+                                            e.isLiked!.isTrue).toList()[index]
+                                                .mediaLink
+                                                .toString(),
+                                            height: MySize.getHeight(25),
+                                            width: MySize.getWidth(25),
+                                            boxFit: BoxFit.cover)),
+                                    (!isNullEmptyOrFalse(
+                                        controller.homeController!.post.where((
+                                            e) =>
+                                        e.isLiked!.isTrue)
+                                            .toList()[index]
+                                            .videoThumbnail))
+                                        ? Positioned(
+                                      top: MySize.getHeight(10),
+                                      right: MySize.getHeight(10),
+                                      child: Container(
+                                        child: SvgPicture.asset(
+                                            imagePath + "video.svg",
+                                            color: Colors.white),
+                                        height: MySize.getHeight(25),
+                                        width: MySize.getWidth(25),
+                                      ),
                                     )
-                                        : Expanded(
-                                        child: GridView.builder(
-                                          itemCount: controller.likePost.length,
-                                          gridDelegate:
-                                          SliverGridDelegateWithFixedCrossAxisCount(
-                                            crossAxisCount: 3,
-                                            crossAxisSpacing:
-                                            MySize.getHeight(2),
-                                            mainAxisSpacing:
-                                            MySize.getHeight(2),
-                                          ),
-                                          itemBuilder: (context, index) {
-                                            controller.likePost
-                                                .forEach((element) {
-                                              element.isLiked!.value = true;
-                                            });
-                                            return GestureDetector(
-                                              onTap: () {
-                                                Get.offAndToNamed(
-                                                    Routes.SHOW_POST_PAGE,
-                                                    arguments: {
-                                                      ArgumentConstant.post:
-                                                      controller
-                                                          .likePost[index],
-                                                      ArgumentConstant
-                                                          .isFromHome: false,
-                                                      ArgumentConstant
-                                                          .isFromLike: true,
-                                                    });
-                                              },
-                                              child: Stack(
-                                                children: [
-                                                  Container(
-                                                      height: MySize.safeHeight,
-                                                      width: MySize.safeWidth,
-                                                      color: Colors.black,
-                                                      child: getImageByLink(
-                                                          url: (!isNullEmptyOrFalse(
-                                                              controller
-                                                                  .likePost[
-                                                              index]
-                                                                  .videoThumbnail))
-                                                              ? controller
-                                                              .likePost[
-                                                          index]
-                                                              .videoThumbnail
-                                                              .toString()
-                                                              : controller
-                                                              .likePost[
-                                                          index]
-                                                              .mediaLink
-                                                              .toString(),
-                                                          height:
-                                                          MySize.getHeight(
-                                                              25),
-                                                          width:
-                                                          MySize.getWidth(
-                                                              25),
-                                                          boxFit:
-                                                          BoxFit.cover)),
-                                                  (!isNullEmptyOrFalse(
-                                                      controller
-                                                          .likePost[index]
-                                                          .videoThumbnail))
-                                                      ? Positioned(
-                                                    top: MySize.getHeight(
-                                                        10),
-                                                    right:
-                                                    MySize.getHeight(
-                                                        10),
-                                                    child: Container(
-                                                      child: SvgPicture.asset(
-                                                          imagePath +
-                                                              "video.svg",
-                                                          color: Colors
-                                                              .white),
-                                                      height: 25,
-                                                      width: 25,
-                                                    ),
-                                                  )
-                                                      : SizedBox(),
-                                                ],
-                                              ),
-                                            );
-                                          },
-                                        )),
+                                        : SizedBox(),
+                                    // Obx(() {
+                                    //   return (!isNullEmptyOrFalse(controller.homeController!.post.where((e) => e.isLiked!.isTrue).toList()[index]
+                                    //       .isLiked!
+                                    //       .value))
+                                    //       ? Positioned(
+                                    //     bottom: MySize.getHeight(10),
+                                    //     right: MySize.getHeight(10),
+                                    //     child: Container(
+                                    //       child: SvgPicture.asset(
+                                    //           imagePath +
+                                    //               "likeFill.svg",
+                                    //           color: Colors.white),
+                                    //       height: MySize.getHeight(15),
+                                    //       width: MySize.getWidth(15),
+                                    //     ),
+                                    //   )
+                                    //       : SizedBox();
+                                    // })
                                   ],
-                                );
-                              }
+                                ),
+                              );
                             },
-                            stream: FireController().getPost(),
-                          );
-                        }
-                      },
-                      stream: FireController().getDailyThought(),
-                    ),
+                            itemCount:
+                            controller.homeController!
+                                .post
+                                .where((e) => e.isLiked!.isTrue)
+                                .toList()
+                                .length),
+                      );
+                    }),
                   ),
                   getIt<AdService>().getBanners(),
                 ],

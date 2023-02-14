@@ -24,7 +24,7 @@
               />
        <meta-data
            android:name="com.google.android.gms.ads.APPLICATION_ID"
-               android:value="oM3jMyKpn9"/>
+               android:value="q9xu5Ij0ow"/>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

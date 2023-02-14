@@ -23,7 +23,7 @@ class AllPostScreenView extends GetWidget<AllPostScreenController> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        Get.offAllNamed(Routes.HOME);
+        Get.toNamed(Routes.HOME);
 
         return await true;
       },
@@ -43,7 +43,7 @@ class AllPostScreenView extends GetWidget<AllPostScreenController> {
                   centerTitle: true,
                   leading: GestureDetector(
                     onTap: () async {
-                      Get.offAllNamed(Routes.HOME);
+                      Get.toNamed(Routes.HOME);
                     },
                     child: Container(
                       padding: EdgeInsets.only(left: MySize.getWidth(10)),
@@ -69,18 +69,16 @@ class AllPostScreenView extends GetWidget<AllPostScreenController> {
                                 mainAxisSpacing: MySize.getHeight(2),
                               ),
                               itemBuilder: (context, index) {
-                                if (controller.likeList.contains(controller
-                                    .homeController!.post[index].uId)) {
-                                  controller.homeController!.post[index]
-                                      .isLiked!.value = true;
-                                }
+                                // if (controller.likeList.contains(controller.homeController!.post.where((e) => e.isDaily!.isFalse).toList()[index].uId)) {
+                                //   controller.homeController!.post.where((e) => e.isDaily!.isFalse).toList()[index]
+                                //       .isLiked!.value = true;
+                                // }
                                 print(DateTime.now().microsecondsSinceEpoch);
-                                return GestureDetector(
+                                return(controller.homeController!.post.where((e) => e.isDaily!.isFalse).toList()[index]
+                                    .isDaily!.isTrue)?null: GestureDetector(
                                   onTap: () {
                                     Get.toNamed(Routes.SHOW_POST_PAGE,
                                         arguments: {
-                                          // ArgumentConstant.post:
-                                          //     controller.post[index],
                                           ArgumentConstant.index: index,
                                           ArgumentConstant.isFromHome: false,
                                           ArgumentConstant.isFromLike: false,
@@ -94,24 +92,17 @@ class AllPostScreenView extends GetWidget<AllPostScreenController> {
                                           color: Colors.black,
                                           child: getImageByLink(
                                               url: (!isNullEmptyOrFalse(
-                                                      controller
-                                                          .homeController!
-                                                          .post[index]
+                                                  controller.homeController!.post.where((e) => e.isDaily!.isFalse).toList()[index]
                                                           .videoThumbnail))
-                                                  ? controller
-                                                      .homeController!
-                                                      .post[index]
+                                                  ? controller.homeController!.post.where((e) => e.isDaily!.isFalse).toList()[index]
                                                       .videoThumbnail
                                                       .toString()
-                                                  : controller.homeController!
-                                                      .post[index].mediaLink
+                                                  :controller.homeController!.post.where((e) => e.isDaily!.isFalse).toList()[index].mediaLink
                                                       .toString(),
                                               height: MySize.getHeight(25),
                                               width: MySize.getWidth(25),
                                               boxFit: BoxFit.cover)),
-                                      (!isNullEmptyOrFalse(controller
-                                              .homeController!
-                                              .post[index]
+                                      (!isNullEmptyOrFalse(controller.homeController!.post.where((e) => e.isDaily!.isFalse).toList()[index]
                                               .videoThumbnail))
                                           ? Positioned(
                                               top: MySize.getHeight(10),
@@ -126,9 +117,7 @@ class AllPostScreenView extends GetWidget<AllPostScreenController> {
                                             )
                                           : SizedBox(),
                                       Obx(() {
-                                        return (!isNullEmptyOrFalse(controller
-                                                .homeController!
-                                                .post[index]
+                                        return (!isNullEmptyOrFalse(controller.homeController!.post.where((e) => e.isDaily!.isFalse).toList()[index]
                                                 .isLiked!
                                                 .value))
                                             ? Positioned(
@@ -150,7 +139,7 @@ class AllPostScreenView extends GetWidget<AllPostScreenController> {
                                 );
                               },
                               itemCount:
-                                  controller.homeController!.post.length),
+                                  controller.homeController!.post.where((e) => e.isDaily!.isFalse).toList().length),
                         ),
                       ),
                       getIt<AdService>().getBanners(),

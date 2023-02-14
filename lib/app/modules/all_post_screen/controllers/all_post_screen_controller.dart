@@ -22,7 +22,7 @@ class AllPostScreenController extends GetxController {
     }
     Get.lazyPut(() => HomeController());
     homeController = Get.find<HomeController>();
-
+    update();
     if (getIt<TimerService>().is40SecCompleted) {
       ads();
     }
