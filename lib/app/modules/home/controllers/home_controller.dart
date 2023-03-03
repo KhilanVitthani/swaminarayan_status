@@ -37,31 +37,31 @@ class HomeController extends GetxController {
     //     }
     //   }
     // });
-      FireController().getPostData().then((value) {
-        value.reversed.forEach((element) {
-          if(!post.contains(element)){
-            element.isDaily!.value = false;
-            post.add(element);
-          }
-        });
-        update();
-    }).catchError((error){
-      print(error);
+    FireController().getPostData().then((value) {
+      value.reversed.forEach((element) {
+        if (!post.contains(element)) {
+          element.isDaily!.value = false;
+          post.add(element);
+        }
       });
-      FireController().getDailyData().then((value) {
-        value.reversed.forEach((element) {
-          if(!post.contains(element)){
-            element.isDaily!.value = true;
-            post.add(element);
-          }
-        });
-        update();
-    }).catchError((error){
+      update();
+    }).catchError((error) {
       print(error);
+    });
+    FireController().getDailyData().then((value) {
+      value.reversed.forEach((element) {
+        if (!post.contains(element)) {
+          element.isDaily!.value = true;
+          post.add(element);
+          print(element.isDaily);
+        }
       });
+      update();
+    }).catchError((error) {
+      print(error);
+    });
 
-
-      box.write(ArgumentConstant.isFirstTime, false);
+    box.write(ArgumentConstant.isFirstTime, false);
     if (!isNullEmptyOrFalse(box.read(ArgumentConstant.likeList))) {
       likeList = (jsonDecode(box.read(ArgumentConstant.likeList))).toList();
     }
@@ -95,6 +95,7 @@ class HomeController extends GetxController {
     });
     super.onInit();
   }
+
   //
   Future<void> ads() async {
     await getIt<AdService>()
@@ -115,7 +116,7 @@ class HomeController extends GetxController {
   addDataToLike({
     required String data,
   }) {
-    if(!likeList.contains(data)){
+    if (!likeList.contains(data)) {
       likeList.add(data);
     }
     box.write(ArgumentConstant.likeList, jsonEncode(likeList));
@@ -123,15 +124,13 @@ class HomeController extends GetxController {
   }
 
   removeDataToLike({required String data}) {
-    if(likeList.contains(data)){
-
+    if (likeList.contains(data)) {
       likeList.remove(data);
     }
     box.write(ArgumentConstant.likeList, jsonEncode(likeList));
 
     print(box.read(ArgumentConstant.likeList));
   }
-
 
   hide() {
     if (isTaped.isTrue) {

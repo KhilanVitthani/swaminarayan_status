@@ -20,32 +20,34 @@ class FireController {
         .snapshots();
   }
 
- Future<List<dailyThoughtModel>> getPostData() async {
+  Future<List<dailyThoughtModel>> getPostData() async {
     print('getMessage');
-    QuerySnapshot querySnapshot=await  _postCollectionReferance
+    QuerySnapshot querySnapshot = await _postCollectionReferance
         .orderBy("dateTime", descending: false)
         .get();
     List<dailyThoughtModel> result = [];
     querySnapshot.docs.forEach((doc) {
       QueryDocumentSnapshot docu = doc;
-      print(docu.data() as Map<String,dynamic>);
-      result.add(dailyThoughtModel.fromJson(docu.data() as Map<String,dynamic>));
+      print(docu.data() as Map<String, dynamic>);
+      result
+          .add(dailyThoughtModel.fromJson(docu.data() as Map<String, dynamic>));
     });
     return result;
+  }
 
-  } Future<List<dailyThoughtModel>> getDailyData() async {
+  Future<List<dailyThoughtModel>> getDailyData() async {
     print('getMessage');
-    QuerySnapshot querySnapshot=await  _dailyThoughtCollectionReferance
+    QuerySnapshot querySnapshot = await _dailyThoughtCollectionReferance
         .orderBy("dateTime", descending: false)
         .get();
     List<dailyThoughtModel> result = [];
     querySnapshot.docs.forEach((doc) {
       QueryDocumentSnapshot docu = doc;
-      print(docu.data() as Map<String,dynamic>);
-      result.add(dailyThoughtModel.fromJson(docu.data() as Map<String,dynamic>));
+      print(docu.data() as Map<String, dynamic>);
+      result
+          .add(dailyThoughtModel.fromJson(docu.data() as Map<String, dynamic>));
     });
     return result;
-
   }
 
   Stream<QuerySnapshot> getDailyThought() {
