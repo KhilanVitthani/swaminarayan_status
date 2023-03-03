@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
+
 class TimerService {
   Timer? timer;
   bool is40SecCompleted = false;
@@ -11,7 +13,9 @@ class TimerService {
       isTimerOn = true;
       print("Timer Value := ${timer.tick}");
       if (timer.tick >= 40) {
-        is40SecCompleted = true;
+        if (!kDebugMode) {
+          is40SecCompleted = true;
+        }
         isTimerOn = false;
         timer.cancel();
       }
