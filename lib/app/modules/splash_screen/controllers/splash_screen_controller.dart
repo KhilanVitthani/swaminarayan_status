@@ -9,18 +9,25 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:yodo1mas/Yodo1MAS.dart';
 
+import '../../../../constants/firebase_controller.dart';
+import '../../../../constants/sizeConstant.dart';
 import '../../../../utilities/ad_service.dart';
 
 class SplashScreenController extends GetxController {
-  RxBool isFirstTime = false.obs;
+  RxBool isFirstTime = true.obs;
   @override
   void onInit() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      if (box.read(ArgumentConstant.isFirstTime) != null) {
+      await FireController().adsVisible().then((value) {
+        print(value);
+      });
+      if (!isNullEmptyOrFalse(box.read(ArgumentConstant.isFirstTime))) {
         isFirstTime.value = box.read(ArgumentConstant.isFirstTime);
       }
-      if (isFirstTime.value) {
-        Get.offAllNamed(Routes.HOME);
+      if (isNullEmptyOrFalse(isFirstTime)) {
+        Timer(Duration(seconds: 3), () {
+          Get.offAllNamed(Routes.HOME);
+        });
       } else {
         await ads();
       }

@@ -72,6 +72,7 @@ class ShowPostPageController extends GetxController {
           break;
       }
     });
+
     super.onInit();
   }
 
@@ -105,8 +106,8 @@ class ShowPostPageController extends GetxController {
   addDataToLike({
     required String data,
   }) {
-    if(!likeList.contains(data)){
-    likeList.add(data);
+    if (!likeList.contains(data)) {
+      likeList.add(data);
     }
     box.write(ArgumentConstant.likeList, jsonEncode(likeList));
     homeController!.post[Index.value].isLiked!.value = true;
@@ -116,14 +117,13 @@ class ShowPostPageController extends GetxController {
   }
 
   removeDataToLike({required String data}) {
-    if(likeList.contains(data)){
-
-    likeList.remove(data);
+    if (likeList.contains(data)) {
+      likeList.remove(data);
     }
 
     box.write(ArgumentConstant.likeList, jsonEncode(likeList));
     homeController!.post[Index.value].isLiked!.value = false;
-update();
+    update();
     print(box.read(ArgumentConstant.likeList));
   }
 
