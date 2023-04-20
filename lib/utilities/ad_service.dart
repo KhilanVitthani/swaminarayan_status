@@ -13,6 +13,8 @@ class AdService {
   static const bannerAd = "bannerAd";
   static const rewardsAd = "rewardsAd";
   static RxBool isVisible = false.obs;
+  static RxBool isBannerVisible = false.obs;
+  static RxBool isNativeVisible = false.obs;
 
   Future<bool> getAd({required String adType}) async {
     FireController().adsVisible().then((value) {
@@ -47,6 +49,9 @@ class AdService {
       print("object");
       return Yodo1MASBannerAd(
         size: BannerSize.Banner,
+        onOpen: () {
+          isBannerVisible.value = true;
+        },
       );
     } else {
       return SizedBox();

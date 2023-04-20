@@ -210,7 +210,7 @@ class LikeScreenView extends GetView<LikeScreenController> {
                           );
                         }),
                       ),
-                      getIt<AdService>().getNative(),
+                      getIt<AdService>().getBanners(),
                     ],
                   ),
                 ),
