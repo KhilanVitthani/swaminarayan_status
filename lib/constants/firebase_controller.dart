@@ -93,4 +93,18 @@ class FireController {
         .doc(Uid)
         .update({"isLike": status});
   }
+
+  deleteData() async {
+    print('getMessage');
+    QuerySnapshot querySnapshot = await _dailyThoughtCollectionReferance
+        .orderBy("dateTime", descending: false)
+        .get();
+    querySnapshot.docs.forEach((doc) {
+      Map m = doc.data() as Map<String, dynamic>;
+      if (m['dateTime'] <= 1685509537039000) {
+        _dailyThoughtCollectionReferance.doc(m['uId']).delete();
+      }
+      print(doc.data() as Map<String, dynamic>);
+    });
+  }
 }

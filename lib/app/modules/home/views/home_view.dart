@@ -41,6 +41,11 @@ class HomeView extends GetView<HomeController> {
             return SafeArea(
               child: Scaffold(
                 backgroundColor: Colors.white,
+                // floatingActionButton: FloatingActionButton(
+                //   onPressed: () {
+                //     FireController().deleteData();
+                //   },
+                // ),
                 appBar: AppBar(
                   backgroundColor: Colors.transparent,
                   centerTitle: true,

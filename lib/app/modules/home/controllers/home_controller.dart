@@ -44,6 +44,7 @@ class HomeController extends GetxController {
           post.add(element);
         }
       });
+      print("Length := ${post.length}");
       update();
     }).catchError((error) {
       print(error);
@@ -56,6 +57,8 @@ class HomeController extends GetxController {
           print(element.isDaily);
         }
       });
+      print("DaiLength := ${value.length}");
+
       update();
     }).catchError((error) {
       print(error);
