@@ -33,6 +33,18 @@ class FireController {
       result
           .add(dailyThoughtModel.fromJson(docu.data() as Map<String, dynamic>));
     });
+    // List<dailyThoughtModel> result = [];
+    // FirebaseDatabase.instance
+    //     .ref()
+    //     .child('post')
+    //     .orderByChild('dateTime')
+    //     .onChildAdded
+    //     .listen(
+    //       (event) {
+    //     var data = event.snapshot.value;
+    //     result.add(dailyThoughtModel.fromJson(data as Map<String, dynamic>));
+    //   },
+    // );
     return result;
   }
 
