@@ -26,8 +26,8 @@ final getIt = GetIt.instance;
 GetStorage box = GetStorage();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  setUp();
   await Firebase.initializeApp();
+  setUp();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
