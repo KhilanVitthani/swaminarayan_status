@@ -86,12 +86,12 @@ class AllPostScreenView extends GetWidget<AllPostScreenController> {
                                           int Index = 0;
                                           controller.homeController!.post
                                               .forEach((element) {
-                                            if (element.uId ==
+                                            if (element.dateTime ==
                                                 controller.homeController!.post
                                                     .where((e) =>
                                                         e.isDaily!.isFalse)
                                                     .toList()[index]
-                                                    .uId) {
+                                                    .dateTime) {
                                               Index = i;
                                             }
                                             i++;

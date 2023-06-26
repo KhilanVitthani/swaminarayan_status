@@ -29,7 +29,7 @@ class HomeController extends GetxController {
   Rx<FlickManager>? flickManager;
   RxString? mediaLink = "".obs;
   @override
-  void onInit() {
+  Future<void> onInit() async {
     // WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
     //   if (!isNullEmptyOrFalse(Get.arguments)) {
     //     if (!isNullEmptyOrFalse(Get.arguments[ArgumentConstant.isFromSplash])) {
@@ -37,8 +37,15 @@ class HomeController extends GetxController {
     //     }
     //   }
     // });
+
+    if (!isNullEmptyOrFalse(box.read(ArgumentConstant.likeList))) {
+      likeList = (jsonDecode(box.read(ArgumentConstant.likeList))).toList();
+    }
     FireController().getPostData().then((value) {
       value.reversed.forEach((element) {
+        if (likeList.contains(element.dateTime.toString())) {
+          element.isLiked!.value = true;
+        }
         if (!post.contains(element)) {
           element.isDaily!.value = false;
           post.add(element);
@@ -51,6 +58,9 @@ class HomeController extends GetxController {
     });
     FireController().getDailyData().then((value) {
       value.reversed.forEach((element) {
+        if (likeList.contains(element.dateTime.toString())) {
+          element.isLiked!.value = true;
+        }
         if (!post.contains(element)) {
           element.isDaily!.value = true;
           post.add(element);
@@ -65,9 +75,6 @@ class HomeController extends GetxController {
     });
 
     box.write(ArgumentConstant.isFirstTime, false);
-    if (!isNullEmptyOrFalse(box.read(ArgumentConstant.likeList))) {
-      likeList = (jsonDecode(box.read(ArgumentConstant.likeList))).toList();
-    }
     if (getIt<TimerService>().is40SecCompleted) {
       ads();
     }

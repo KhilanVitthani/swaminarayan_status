@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:swaminarayan_status/app/routes/app_pages.dart';
 import 'package:swaminarayan_status/constants/api_constants.dart';
 import 'package:swaminarayan_status/main.dart';
@@ -29,7 +30,11 @@ class SplashScreenController extends GetxController {
           Get.offAllNamed(Routes.HOME);
         });
       } else {
-        await ads();
+        if (!kDebugMode) {
+          await ads();
+        } else {
+          Get.offAllNamed(Routes.HOME);
+        }
       }
       Yodo1MAS.instance.setInterstitialListener((event, message) {
         switch (event) {
@@ -57,7 +62,11 @@ class SplashScreenController extends GetxController {
   time() async {
     (AdService.isVisible.isTrue)
         ? await Timer(Duration(seconds: 8), () async {
-            ads();
+            if (!kDebugMode) {
+              ads();
+            } else {
+              Get.offAllNamed(Routes.HOME);
+            }
           })
         : await Timer(Duration(seconds: 5), () async {
             Get.offAllNamed(Routes.HOME);

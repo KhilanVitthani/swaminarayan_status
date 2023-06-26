@@ -140,7 +140,7 @@ class ShowPostPageView extends GetWidget<ShowPostPageController> {
                                                     .homeController!
                                                     .post[
                                                         controller.Index.value]
-                                                    .uId
+                                                    .dateTime
                                                     .toString()
                                                     .trim());
                                           } else {
@@ -149,7 +149,7 @@ class ShowPostPageView extends GetWidget<ShowPostPageController> {
                                                     .homeController!
                                                     .post[
                                                         controller.Index.value]
-                                                    .uId
+                                                    .dateTime
                                                     .toString()
                                                     .trim());
                                           }
@@ -325,7 +325,7 @@ class ShowPostPageView extends GetWidget<ShowPostPageController> {
                                                     .homeController!
                                                     .post[
                                                         controller.Index.value]
-                                                    .uId
+                                                    .dateTime
                                                     .toString()
                                                     .trim());
                                           } else {
@@ -334,7 +334,7 @@ class ShowPostPageView extends GetWidget<ShowPostPageController> {
                                                     .homeController!
                                                     .post[
                                                         controller.Index.value]
-                                                    .uId
+                                                    .dateTime
                                                     .toString()
                                                     .trim());
                                           }

@@ -143,13 +143,13 @@ class HomeView extends GetView<HomeController> {
                                                   int Index = 0;
                                                   controller.post
                                                       .forEach((element) {
-                                                    if (element.uId ==
+                                                    if (element.dateTime ==
                                                         controller.post
                                                             .where((e) => e
                                                                 .isDaily!
                                                                 .isTrue)
                                                             .toList()[index]
-                                                            .uId) {
+                                                            .dateTime) {
                                                       Index = i;
                                                     }
                                                     i++;
@@ -323,7 +323,7 @@ class HomeView extends GetView<HomeController> {
                                                                               .post
                                                                               .where((e) => e.isDaily!.isTrue)
                                                                               .toList()[index]
-                                                                              .uId
+                                                                              .dateTime
                                                                               .toString()
                                                                               .trim());
                                                                     } else {
@@ -332,7 +332,7 @@ class HomeView extends GetView<HomeController> {
                                                                               .post
                                                                               .where((e) => e.isDaily!.isTrue)
                                                                               .toList()[index]
-                                                                              .uId
+                                                                              .dateTime
                                                                               .toString()
                                                                               .trim());
                                                                     }
@@ -605,37 +605,6 @@ class HomeView extends GetView<HomeController> {
                             Spacing.height(
                               MySize.getHeight(10),
                             ),
-                            // StreamBuilder<QuerySnapshot>(
-                            //   builder: (context, data) {
-                            //     if (data.connectionState ==
-                            //         ConnectionState.waiting) {
-                            //       print("object");
-                            //       return SizedBox();
-                            //     } else if (data.hasError) {
-                            //       print("object");
-                            //       return SizedBox();
-                            //     } else {
-                            //       for (int i = 0;
-                            //           i < data.data!.docs.length;
-                            //           i++) {
-                            //         dailyThoughtModel dataModel =
-                            //             dailyThoughtModel.fromJson(
-                            //           data.data!
-                            //               .docs[data.data!.docs.length - i - 1]
-                            //               .data() as Map<String, dynamic>,
-                            //         );
-                            //         (controller.post.length >=
-                            //                 data.data!.docs.length)
-                            //             ? null
-                            //             : controller.post.add(dataModel);
-                            //       }
-                            //         controller.post.refresh();
-                            //       print(controller.post.length);
-                            //       return SizedBox();
-                            //     }
-                            //   },
-                            //   stream: FireController().getPost(),
-                            // ),
                           ],
                         ),
                       ),
@@ -656,12 +625,10 @@ class HomeView extends GetView<HomeController> {
                                     mainAxisSpacing: MySize.getHeight(2),
                                   ),
                                   itemBuilder: (context, index) {
-                                    // if (controller.likeList.contains(controller.post.where((e) => e.isDaily!.isFalse).toList()[index].uId)) {
-                                    //   controller.post.where((e) => e.isDaily!.isFalse).toList()[index]
-                                    //       .isLiked!.value = true;
-                                    // }
-                                    print(
-                                        DateTime.now().microsecondsSinceEpoch);
+                                    print(controller.post
+                                        .where((e) => e.isDaily!.isFalse)
+                                        .toList()[index]
+                                        .dateTime);
                                     return (controller.post
                                             .where((e) => e.isDaily!.isFalse)
                                             .toList()[index]
@@ -674,12 +641,12 @@ class HomeView extends GetView<HomeController> {
                                               int Index = 0;
                                               controller.post
                                                   .forEach((element) {
-                                                if (element.uId ==
+                                                if (element.dateTime ==
                                                     controller.post
                                                         .where((e) =>
                                                             e.isDaily!.isFalse)
                                                         .toList()[index]
-                                                        .uId) {
+                                                        .dateTime) {
                                                   Index = i;
                                                 }
                                                 i++;
