@@ -371,8 +371,8 @@ class HomeView extends GetView<HomeController> {
                                                               GestureDetector(
                                                                 onTap:
                                                                     () async {
-                                                                  // controller
-                                                                  //     .ads();
+                                                                    await  controller
+                                                                      .initInterstitialAdAds();
                                                                   if (isNullEmptyOrFalse(controller
                                                                       .post
                                                                       .where((e) => e

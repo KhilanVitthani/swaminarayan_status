@@ -20,8 +20,6 @@ class SplashScreenController extends GetxController {
   RxBool isAddShow = false.obs;
   InterstitialAd? interstitialAd;
   RxBool isAdLoaded = false.obs;
-  BannerAd? bannerAd;
-  RxBool isBannerLoaded = false.obs;
   @override
   void onInit() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
@@ -80,22 +78,6 @@ class SplashScreenController extends GetxController {
         ));
   }
 
-  initBannerAds() {
-    bannerAd = BannerAd(
-        size: AdSize.banner,
-        adUnitId: "ca-app-pub-3940256099942544/6300978111",
-        listener: BannerAdListener(
-          onAdLoaded: (ad) {
-            isBannerLoaded.value = true;
-          },
-          onAdFailedToLoad: (ad, error) {
-            ad.dispose();
-          },
-        ),
-        request: AdRequest())
-      ..load();
-  }
-
   @override
   void onReady() {
     super.onReady();
@@ -103,6 +85,7 @@ class SplashScreenController extends GetxController {
 
   @override
   void onClose() {
+    interstitialAd!.dispose();
     super.onClose();
   }
 }

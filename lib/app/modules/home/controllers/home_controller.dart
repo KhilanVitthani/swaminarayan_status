@@ -76,7 +76,7 @@ class HomeController extends GetxController {
       await initBannerAds();
       box.write(ArgumentConstant.isFirstTime, false);
       if (getIt<TimerService>().is40SecCompleted) {
-        // ads();
+        await initInterstitialAdAds();
       }
       // Yodo1MAS.instance.setInterstitialListener((event, message) {
       //   switch (event) {
@@ -123,6 +123,8 @@ class HomeController extends GetxController {
   //     print("Error := $error");
   //   });
   // }
+
+
   initInterstitialAdAds() async {
     InterstitialAd.load(
         adUnitId: "ca-app-pub-3940256099942544/1033173712",
@@ -131,9 +133,25 @@ class HomeController extends GetxController {
           onAdLoaded: (ad) {
             interstitialAd = ad;
             isAdLoaded.value = true;
+            if (!isNullEmptyOrFalse(isAddShow.value)) {
+              if (isAdLoaded.value) {
+                interstitialAd!.show().then((value) {
+                  getIt<TimerService>().verifyTimer();
+                  if (!isNullEmptyOrFalse(mediaLink)) {
+                    getVideo(mediaLink: mediaLink!.value);
+                  }
+                });
+              }
+            }
           },
           onAdFailedToLoad: (error) {
+            getIt<TimerService>().verifyTimer();
+            if (!isNullEmptyOrFalse(mediaLink)) {
+              getVideo(mediaLink: mediaLink!.value);
+            }
+            // Get.back();
             interstitialAd!.dispose();
+
           },
         ));
   }
@@ -200,6 +218,8 @@ class HomeController extends GetxController {
 
   @override
   void onClose() {
+    bannerAd!.dispose();
+    interstitialAd!.dispose();
     if (isVideo.isTrue) {
       flickManager!.value.dispose();
     }
