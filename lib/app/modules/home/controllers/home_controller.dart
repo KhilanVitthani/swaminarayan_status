@@ -70,10 +70,11 @@ class HomeController extends GetxController {
       }).catchError((error) {
         print(error);
       });
-      await FireController().adsVisible().then((value) {
+      await FireController().adsVisible().then((value) async{
         isAddShow.value = value;
+       await initBannerAds();
+        getIt<TimerService>().verifyTimer();
       });
-      await initBannerAds();
       box.write(ArgumentConstant.isFirstTime, false);
       if (getIt<TimerService>().is40SecCompleted) {
         await initInterstitialAdAds();

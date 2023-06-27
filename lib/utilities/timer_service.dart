@@ -13,7 +13,7 @@ class TimerService {
       isTimerOn = true;
       print("Timer Value := ${timer.tick}");
       if (timer.tick >= 40) {
-        if (!kDebugMode) {
+        if (kDebugMode) {
           is40SecCompleted = true;
         }
         isTimerOn = false;
