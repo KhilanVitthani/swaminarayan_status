@@ -6,6 +6,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 import 'app/routes/app_pages.dart';
@@ -24,6 +25,15 @@ GetStorage box = GetStorage();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await MobileAds.instance.initialize();
+  MobileAds.instance.updateRequestConfiguration(
+    RequestConfiguration(
+      tagForChildDirectedTreatment: TagForChildDirectedTreatment.unspecified,
+      testDeviceIds: <String>[
+        "8BE5F1E64BE609192A8C00DAD1326637",
+      ],
+    ),
+  );
   setUp();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
