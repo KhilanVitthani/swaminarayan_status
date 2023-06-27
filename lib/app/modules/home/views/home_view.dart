@@ -558,7 +558,7 @@ class HomeView extends GetView<HomeController> {
                           stream: FireController().getDailyThought(),
                         ),
                       ),
-                      getIt<AdService>().getBanners(),
+                      // getIt<AdService>().getBanners(),
                       Padding(
                         padding: EdgeInsets.only(
                             left: MySize.getWidth(10),

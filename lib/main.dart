@@ -7,12 +7,9 @@ import 'package:get/get.dart';
 import 'package:get_it/get_it.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
-import 'package:yodo1mas/Yodo1MAS.dart';
-// import 'package:yodo1mas/Yodo1MAS.dart';
 
 import 'app/routes/app_pages.dart';
 import 'constants/app_module.dart';
-import 'constants/sizeConstant.dart';
 import 'firebase_options.dart';
 
 initFireBaseApp() async {
@@ -42,11 +39,6 @@ void main() async {
     print(event.notification.body);
     event.complete(event.notification);
   });
-  Yodo1MAS.instance.init(
-    "q9xu5Ij0ow",
-    true,
-    (successful) {},
-  );
   await GetStorage.init();
   FlutterNativeSplash.removeAfter(afterInit);
   runApp(

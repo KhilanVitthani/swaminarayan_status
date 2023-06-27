@@ -11,8 +11,6 @@ import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
-import 'package:yodo1mas/Yodo1MAS.dart';
-
 import '../../../../constants/firebase_controller.dart';
 import '../../../../utilities/ad_service.dart';
 import '../../../../utilities/timer_service.dart';
@@ -78,31 +76,31 @@ class HomeController extends GetxController {
     if (getIt<TimerService>().is40SecCompleted) {
       ads();
     }
-    Yodo1MAS.instance.setInterstitialListener((event, message) {
-      switch (event) {
-        case Yodo1MAS.AD_EVENT_OPENED:
-          print('Interstitial AD_EVENT_OPENED');
-          SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-          break;
-        case Yodo1MAS.AD_EVENT_ERROR:
-          getIt<TimerService>().verifyTimer();
-          SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-          if (!isNullEmptyOrFalse(mediaLink)) {
-            getVideo(mediaLink: mediaLink!.value);
-          }
-          Get.back();
-          print('Interstitial AD_EVENT_ERROR' + message);
-          break;
-        case Yodo1MAS.AD_EVENT_CLOSED:
-          getIt<TimerService>().verifyTimer();
-          SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-          if (!isNullEmptyOrFalse(mediaLink)) {
-            getVideo(mediaLink: mediaLink!.value);
-          }
-          Get.back();
-          break;
-      }
-    });
+    // Yodo1MAS.instance.setInterstitialListener((event, message) {
+    //   switch (event) {
+    //     case Yodo1MAS.AD_EVENT_OPENED:
+    //       print('Interstitial AD_EVENT_OPENED');
+    //       SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+    //       break;
+    //     case Yodo1MAS.AD_EVENT_ERROR:
+    //       getIt<TimerService>().verifyTimer();
+    //       SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    //       if (!isNullEmptyOrFalse(mediaLink)) {
+    //         getVideo(mediaLink: mediaLink!.value);
+    //       }
+    //       Get.back();
+    //       print('Interstitial AD_EVENT_ERROR' + message);
+    //       break;
+    //     case Yodo1MAS.AD_EVENT_CLOSED:
+    //       getIt<TimerService>().verifyTimer();
+    //       SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    //       if (!isNullEmptyOrFalse(mediaLink)) {
+    //         getVideo(mediaLink: mediaLink!.value);
+    //       }
+    //       Get.back();
+    //       break;
+    //   }
+    // });
     super.onInit();
   }
 

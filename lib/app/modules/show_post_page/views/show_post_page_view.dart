@@ -247,8 +247,10 @@ class ShowPostPageView extends GetWidget<ShowPostPageController> {
                                             .showCircularDialog(context);
                                         File? file;
                                         await DefaultCacheManager()
-                                            .getSingleFile(
-                                                controller.postData!.mediaLink!)
+                                            .getSingleFile(controller
+                                                .homeController!
+                                                .post[controller.Index.value]
+                                                .mediaLink!)
                                             .then((value) {
                                           getIt<CustomDialogs>()
                                               .hideCircularDialog(context);
@@ -265,11 +267,11 @@ class ShowPostPageView extends GetWidget<ShowPostPageController> {
                                 ),
                               ),
                             ),
-                            Positioned(
-                              bottom: MySize.getHeight(5),
-                              left: MySize.getWidth(25),
-                              child: getIt<AdService>().getBanners(),
-                            )
+                            // Positioned(
+                            //   bottom: MySize.getHeight(5),
+                            //   left: MySize.getWidth(25),
+                            //   child: getIt<AdService>().getBanners(),
+                            // )
                           ],
                         )
                       : Center(
@@ -452,7 +454,7 @@ class ShowPostPageView extends GetWidget<ShowPostPageController> {
                                 ),
                               ),
                               Spacer(),
-                              getIt<AdService>().getBanners(),
+                              // getIt<AdService>().getBanners(),
                               SizedBox(
                                 height: 5,
                               ),
