@@ -53,24 +53,6 @@ class SplashScreenController extends GetxController {
           });
   }
 
-  // ads() async {
-  //   await getIt<AdService>()
-  //       .getAd(adType: AdService.interstitialAd)
-  //       .then((value) {
-  //     if (!value) {
-  //       SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-  //       Get.offAndToNamed(Routes.HOME);
-  //     } else {
-  //       Future.delayed(Duration(seconds: 5)).then((value) {
-  //         SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-  //         Get.offAndToNamed(Routes.HOME);
-  //       });
-  //     }
-  //   }).catchError((error) {
-  //     print("Error := $error");
-  //   });
-  // }
-
   initInterstitialAdAds() async {
     InterstitialAd.load(
         adUnitId: "ca-app-pub-3940256099942544/1033173712",
@@ -96,6 +78,22 @@ class SplashScreenController extends GetxController {
             interstitialAd!.dispose();
           },
         ));
+  }
+
+  initBannerAds() {
+    bannerAd = BannerAd(
+        size: AdSize.banner,
+        adUnitId: "ca-app-pub-3940256099942544/6300978111",
+        listener: BannerAdListener(
+          onAdLoaded: (ad) {
+            isBannerLoaded.value = true;
+          },
+          onAdFailedToLoad: (ad, error) {
+            ad.dispose();
+          },
+        ),
+        request: AdRequest())
+      ..load();
   }
 
   @override

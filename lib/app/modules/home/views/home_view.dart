@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:swaminarayan_status/app/models/daily_thought_model.dart';
 import 'package:swaminarayan_status/app/routes/app_pages.dart';
 import 'package:swaminarayan_status/constants/api_constants.dart';
@@ -370,8 +371,8 @@ class HomeView extends GetView<HomeController> {
                                                               GestureDetector(
                                                                 onTap:
                                                                     () async {
-                                                                  controller
-                                                                      .ads();
+                                                                  // controller
+                                                                  //     .ads();
                                                                   if (isNullEmptyOrFalse(controller
                                                                       .post
                                                                       .where((e) => e
@@ -558,7 +559,13 @@ class HomeView extends GetView<HomeController> {
                           stream: FireController().getDailyThought(),
                         ),
                       ),
-                      // getIt<AdService>().getBanners(),
+                      (controller.isAddShow.isTrue)?controller.isBannerLoaded.isTrue
+                          ? SizedBox(
+                        width: controller.bannerAd!.size.width.toDouble(),
+                        height: controller.bannerAd!.size.height.toDouble(),
+                        child: AdWidget(ad: controller.bannerAd!),
+                      )
+                          : SizedBox():SizedBox(),
                       Padding(
                         padding: EdgeInsets.only(
                             left: MySize.getWidth(10),
