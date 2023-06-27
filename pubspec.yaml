@@ -13,7 +13,7 @@ dependencies:
   photo_view: ^0.14.0
   get_it:
   get_storage:
-  yodo1mas: ^0.1.1
+#  yodo1mas: ^0.1.1
   onesignal_flutter: ^3.5.0
   cloud_firestore: ^4.3.1
   get: 4.6.5
@@ -22,7 +22,7 @@ dependencies:
   flutter_native_splash:
   share_plus: any
   gallery_saver: ^2.3.2
-  flick_video_player: ^0.5.0
+  flick_video_player:   ^0.5.0
   video_player:
   fluttertoast:
   flutter_cache_manager: ^3.3.0
