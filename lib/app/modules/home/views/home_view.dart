@@ -25,7 +25,7 @@ import '../../../../main.dart';
 import '../../../../utilities/ad_service.dart';
 import '../controllers/home_controller.dart';
 
-class HomeView extends GetView<HomeController> {
+class HomeView extends GetWidget<HomeController> {
   const HomeView({Key? key}) : super(key: key);
 
   @override

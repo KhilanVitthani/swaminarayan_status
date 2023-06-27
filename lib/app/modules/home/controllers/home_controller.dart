@@ -35,10 +35,15 @@ class HomeController extends GetxController {
   @override
   Future<void> onInit() async {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await FireController().adsVisible().then((value) async{
+        isAddShow.value = value;
+        await initBannerAds();
+        getIt<TimerService>().verifyTimer();
+      });
       if (!isNullEmptyOrFalse(box.read(ArgumentConstant.likeList))) {
         likeList = (jsonDecode(box.read(ArgumentConstant.likeList))).toList();
       }
-      FireController().getPostData().then((value) {
+    await  FireController().getPostData().then((value) {
         value.reversed.forEach((element) {
           if (likeList.contains(element.dateTime.toString())) {
             element.isLiked!.value = true;
@@ -53,7 +58,7 @@ class HomeController extends GetxController {
       }).catchError((error) {
         print(error);
       });
-      FireController().getDailyData().then((value) {
+    await  FireController().getDailyData().then((value) {
         value.reversed.forEach((element) {
           if (likeList.contains(element.dateTime.toString())) {
             element.isLiked!.value = true;
@@ -69,11 +74,6 @@ class HomeController extends GetxController {
         update();
       }).catchError((error) {
         print(error);
-      });
-      await FireController().adsVisible().then((value) async{
-        isAddShow.value = value;
-       await initBannerAds();
-        getIt<TimerService>().verifyTimer();
       });
       box.write(ArgumentConstant.isFirstTime, false);
       if (getIt<TimerService>().is40SecCompleted) {

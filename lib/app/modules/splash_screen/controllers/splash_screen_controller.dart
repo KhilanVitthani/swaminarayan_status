@@ -42,12 +42,8 @@ class SplashScreenController extends GetxController {
   }
 
   time() async {
-    (!isAddShow.isTrue)
-        ? await Timer(Duration(seconds: 8), () async {
+   await Timer(Duration(seconds: 5), () async {
             await initInterstitialAdAds();
-          })
-        : await Timer(Duration(seconds: 5), () async {
-            Get.offAllNamed(Routes.HOME);
           });
   }
 
@@ -85,7 +81,10 @@ class SplashScreenController extends GetxController {
 
   @override
   void onClose() {
-    interstitialAd!.dispose();
+    if(isAdLoaded.value)
+      {
+        interstitialAd!.dispose();
+      }
     super.onClose();
   }
 }
