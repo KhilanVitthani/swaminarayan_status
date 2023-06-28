@@ -24,7 +24,6 @@ class AllPostScreenView extends GetWidget<AllPostScreenController> {
     return WillPopScope(
       onWillPop: () async {
         Get.toNamed(Routes.HOME);
-
         return await true;
       },
       child: GetBuilder<AllPostScreenController>(
@@ -200,7 +199,11 @@ class AllPostScreenView extends GetWidget<AllPostScreenController> {
                                   .length),
                         ),
                       ),
-                      // getIt<AdService>().getBanners(),
+                      (controller.isAddShow.isTrue)
+                          ? getIt<AdService>().isBannerLoaded.isTrue
+                              ? getIt<AdService>().getBannerAds()
+                              : SizedBox()
+                          : SizedBox(),
                     ],
                   ),
                 ),

@@ -371,7 +371,7 @@ class HomeView extends GetWidget<HomeController> {
                                                               GestureDetector(
                                                                 onTap:
                                                                     () async {
-                                                                    await  controller
+                                                                  await controller
                                                                       .initInterstitialAdAds();
                                                                   if (isNullEmptyOrFalse(controller
                                                                       .post
@@ -559,13 +559,11 @@ class HomeView extends GetWidget<HomeController> {
                           stream: FireController().getDailyThought(),
                         ),
                       ),
-                      (controller.isAddShow.isTrue)?controller.isBannerLoaded.isTrue
-                          ? SizedBox(
-                        width: controller.bannerAd!.size.width.toDouble(),
-                        height: controller.bannerAd!.size.height.toDouble(),
-                        child: AdWidget(ad: controller.bannerAd!),
-                      )
-                          : SizedBox():SizedBox(),
+                      (controller.isAddShow.isTrue)
+                          ? getIt<AdService>().isBannerLoaded.isTrue
+                              ? getIt<AdService>().getBannerAds()
+                              : SizedBox()
+                          : SizedBox(),
                       Padding(
                         padding: EdgeInsets.only(
                             left: MySize.getWidth(10),

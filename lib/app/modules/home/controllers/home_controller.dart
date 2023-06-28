@@ -29,21 +29,18 @@ class HomeController extends GetxController {
   RxString? mediaLink = "".obs;
   InterstitialAd? interstitialAd;
   RxBool isAdLoaded = false.obs;
-  BannerAd? bannerAd;
-  RxBool isBannerLoaded = false.obs;
+  // BannerAd? bannerAd;
+  // RxBool isBannerLoaded = false.obs;
   RxBool isAddShow = false.obs;
   @override
   Future<void> onInit() async {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      await FireController().adsVisible().then((value) async{
+      await FireController().adsVisible().then((value) async {
         isAddShow.value = value;
-        await initBannerAds();
+        await getIt<AdService>().initBannerAds();
         getIt<TimerService>().verifyTimer();
       });
-      if (!isNullEmptyOrFalse(box.read(ArgumentConstant.likeList))) {
-        likeList = (jsonDecode(box.read(ArgumentConstant.likeList))).toList();
-      }
-    await  FireController().getPostData().then((value) {
+      await FireController().getPostData().then((value) {
         value.reversed.forEach((element) {
           if (likeList.contains(element.dateTime.toString())) {
             element.isLiked!.value = true;
@@ -58,7 +55,7 @@ class HomeController extends GetxController {
       }).catchError((error) {
         print(error);
       });
-    await  FireController().getDailyData().then((value) {
+      await FireController().getDailyData().then((value) {
         value.reversed.forEach((element) {
           if (likeList.contains(element.dateTime.toString())) {
             element.isLiked!.value = true;
@@ -75,56 +72,16 @@ class HomeController extends GetxController {
       }).catchError((error) {
         print(error);
       });
+      if (!isNullEmptyOrFalse(box.read(ArgumentConstant.likeList))) {
+        likeList = (jsonDecode(box.read(ArgumentConstant.likeList))).toList();
+      }
       box.write(ArgumentConstant.isFirstTime, false);
       if (getIt<TimerService>().is40SecCompleted) {
         await initInterstitialAdAds();
       }
-      // Yodo1MAS.instance.setInterstitialListener((event, message) {
-      //   switch (event) {
-      //     case Yodo1MAS.AD_EVENT_OPENED:
-      //       print('Interstitial AD_EVENT_OPENED');
-      //       SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-      //       break;
-      //     case Yodo1MAS.AD_EVENT_ERROR:
-      //       getIt<TimerService>().verifyTimer();
-      //       SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-      //       if (!isNullEmptyOrFalse(mediaLink)) {
-      //         getVideo(mediaLink: mediaLink!.value);
-      //       }
-      //       Get.back();
-      //       print('Interstitial AD_EVENT_ERROR' + message);
-      //       break;
-      //     case Yodo1MAS.AD_EVENT_CLOSED:
-      //       getIt<TimerService>().verifyTimer();
-      //       SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-      //       if (!isNullEmptyOrFalse(mediaLink)) {
-      //         getVideo(mediaLink: mediaLink!.value);
-      //       }
-      //       Get.back();
-      //       break;
-      //   }
-      // });
     });
     super.onInit();
   }
-
-  //
-  // Future<void> ads() async {
-  //   await getIt<AdService>()
-  //       .getAd(
-  //     adType: AdService.interstitialAd,
-  //   )
-  //       .then((value) {
-  //     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-  //     if (!value) {
-  //       SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-  //       Get.back();
-  //     }
-  //   }).catchError((error) {
-  //     print("Error := $error");
-  //   });
-  // }
-
 
   initInterstitialAdAds() async {
     InterstitialAd.load(
@@ -152,25 +109,10 @@ class HomeController extends GetxController {
             }
             // Get.back();
             interstitialAd!.dispose();
-
           },
         ));
   }
-  initBannerAds() {
-    bannerAd = BannerAd(
-        size: AdSize.banner,
-        adUnitId: "ca-app-pub-3940256099942544/6300978111",
-        listener: BannerAdListener(
-          onAdLoaded: (ad) {
-            isBannerLoaded.value = true;
-          },
-          onAdFailedToLoad: (ad, error) {
-            ad.dispose();
-          },
-        ),
-        request: AdRequest())
-      ..load();
-  }
+
   addDataToLike({
     required String data,
   }) {
@@ -219,8 +161,14 @@ class HomeController extends GetxController {
 
   @override
   void onClose() {
-    bannerAd!.dispose();
-    interstitialAd!.dispose();
+    if (!isNullEmptyOrFalse(isAddShow.value)) {
+      if (isAdLoaded.value) {
+        interstitialAd!.dispose();
+      }
+      if (getIt<AdService>().isBannerLoaded.isTrue) {
+        getIt<AdService>().bannerAd!.dispose();
+      }
+    }
     if (isVideo.isTrue) {
       flickManager!.value.dispose();
     }
