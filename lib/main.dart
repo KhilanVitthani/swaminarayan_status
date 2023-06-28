@@ -8,6 +8,7 @@ import 'package:get_it/get_it.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:swaminarayan_status/google_ads_controller.dart';
 
 import 'app/routes/app_pages.dart';
 import 'constants/app_module.dart';
@@ -50,6 +51,7 @@ void main() async {
     event.complete(event.notification);
   });
   await GetStorage.init();
+  Get.put(GoogleAdsController());
   FlutterNativeSplash.removeAfter(afterInit);
   runApp(
     GetMaterialApp(
