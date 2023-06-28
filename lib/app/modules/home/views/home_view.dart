@@ -23,6 +23,7 @@ import '../../../../constants/firebase_controller.dart';
 import '../../../../constants/sizeConstant.dart';
 import '../../../../main.dart';
 import '../../../../utilities/ad_service.dart';
+import '../../../../utilities/timer_service.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetWidget<HomeController> {
@@ -31,6 +32,9 @@ class HomeView extends GetWidget<HomeController> {
   @override
   Widget build(BuildContext context) {
     MySize().init(context);
+    if (getIt<TimerService>().is40SecCompleted) {
+      controller.initInterstitialAdAds();
+    }
     return WillPopScope(
       onWillPop: () async {
         SystemNavigator.pop();
@@ -60,8 +64,10 @@ class HomeView extends GetWidget<HomeController> {
                   ),
                   actions: [
                     GestureDetector(
-                      onTap: () {
+                      onTap: () async {
                         // FireController().addData();
+                        await getIt<AdService>().bannerAd!.dispose();
+                        await getIt<AdService>().initBannerAds();
                         Get.toNamed(Routes.LIKE_SCREEN);
                       },
                       child: Container(
@@ -139,7 +145,7 @@ class HomeView extends GetWidget<HomeController> {
                                           children: [
                                             Expanded(
                                               child: GestureDetector(
-                                                onTap: () {
+                                                onTap: () async {
                                                   int i = 0;
                                                   int Index = 0;
                                                   controller.post
@@ -155,6 +161,11 @@ class HomeView extends GetWidget<HomeController> {
                                                     }
                                                     i++;
                                                   });
+                                                  await getIt<AdService>()
+                                                      .bannerAd!
+                                                      .dispose();
+                                                  await getIt<AdService>()
+                                                      .initBannerAds();
                                                   Get.toNamed(
                                                       Routes.SHOW_POST_PAGE,
                                                       arguments: {
@@ -582,9 +593,11 @@ class HomeView extends GetWidget<HomeController> {
                                 ),
                                 Spacer(),
                                 GestureDetector(
-                                  onTap: () {
-                                    getIt<AdService>().dispose();
-                                    getIt<AdService>().initBannerAds();
+                                  onTap: () async {
+                                    await getIt<AdService>()
+                                        .bannerAd!
+                                        .dispose();
+                                    await getIt<AdService>().initBannerAds();
                                     Get.toNamed(Routes.ALL_POST_SCREEN);
                                   },
                                   child: Container(
@@ -643,7 +656,7 @@ class HomeView extends GetWidget<HomeController> {
                                             .isTrue)
                                         ? null
                                         : GestureDetector(
-                                            onTap: () {
+                                            onTap: () async {
                                               int i = 0;
                                               int Index = 0;
                                               controller.post
@@ -658,6 +671,11 @@ class HomeView extends GetWidget<HomeController> {
                                                 }
                                                 i++;
                                               });
+                                              await getIt<AdService>()
+                                                  .bannerAd!
+                                                  .dispose();
+                                              await getIt<AdService>()
+                                                  .initBannerAds();
                                               Get.toNamed(Routes.SHOW_POST_PAGE,
                                                   arguments: {
                                                     ArgumentConstant.index:

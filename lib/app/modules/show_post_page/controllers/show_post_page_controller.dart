@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:swaminarayan_status/app/models/daily_thought_model.dart';
 import 'package:swaminarayan_status/app/modules/home/controllers/home_controller.dart';
 import 'package:swaminarayan_status/constants/api_constants.dart';
@@ -8,6 +10,7 @@ import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
+import '../../../../constants/firebase_controller.dart';
 import '../../../../constants/sizeConstant.dart';
 import '../../../../main.dart';
 import '../../../../utilities/ad_service.dart';
@@ -25,8 +28,11 @@ class ShowPostPageController extends GetxController {
   List likeList = [];
   HomeController? homeController;
   RxInt Index = 0.obs;
+  InterstitialAd? interstitialAd;
+  RxBool isAdLoaded = false.obs;
+  RxBool isAddShow = false.obs;
   @override
-  void onInit() {
+  void onInit() async {
     if (Get.arguments != null) {
       // postData = Get.arguments[ArgumentConstant.post];
       Index.value = Get.arguments[ArgumentConstant.index];
@@ -48,47 +54,43 @@ class ShowPostPageController extends GetxController {
         homeController!.post[Index.value].isLiked!.value = true;
       }
     }
-    if (getIt<TimerService>().is40SecCompleted) {
-      ads();
-    }
-    // Yodo1MAS.instance.setInterstitialListener((event, message) {
-    //   switch (event) {
-    //     case Yodo1MAS.AD_EVENT_OPENED:
-    //       print('Interstitial AD_EVENT_OPENED');
-    //       SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-    //       break;
-    //     case Yodo1MAS.AD_EVENT_ERROR:
-    //       getIt<TimerService>().verifyTimer();
-    //       SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-    //       Get.back();
-    //       print('Interstitial AD_EVENT_ERROR' + message);
-    //       break;
-    //     case Yodo1MAS.AD_EVENT_CLOSED:
-    //       getIt<TimerService>().verifyTimer();
-    //       SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-    //       Get.back();
-    //       break;
-    //   }
-    // });
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await FireController().adsVisible().then((value) async {
+        isAddShow.value = value;
+        await getIt<AdService>().initBannerAds();
+        getIt<TimerService>().verifyTimer();
+      });
+    });
 
+    if (getIt<TimerService>().is40SecCompleted) {
+      await initInterstitialAdAds();
+    }
     super.onInit();
   }
 
   //
-  Future<void> ads() async {
-    await getIt<AdService>()
-        .getAd(
-      adType: AdService.interstitialAd,
-    )
-        .then((value) {
-      SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-      if (!value) {
-        SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-        Get.back();
-      }
-    }).catchError((error) {
-      print("Error := $error");
-    });
+
+  initInterstitialAdAds() async {
+    InterstitialAd.load(
+        adUnitId: "ca-app-pub-3940256099942544/1033173712",
+        request: AdRequest(),
+        adLoadCallback: InterstitialAdLoadCallback(
+          onAdLoaded: (ad) {
+            interstitialAd = ad;
+            isAdLoaded.value = true;
+            if (!isNullEmptyOrFalse(isAddShow.value)) {
+              if (isAdLoaded.value) {
+                interstitialAd!.show().then((value) {
+                  getIt<TimerService>().verifyTimer();
+                });
+              }
+            }
+          },
+          onAdFailedToLoad: (error) {
+            getIt<TimerService>().verifyTimer();
+            interstitialAd!.dispose();
+          },
+        ));
   }
 
   @override
@@ -98,6 +100,14 @@ class ShowPostPageController extends GetxController {
 
   @override
   void dispose() {
+    if (!isNullEmptyOrFalse(isAddShow.value)) {
+      if (isAdLoaded.value) {
+        interstitialAd!.dispose();
+      }
+      if (getIt<AdService>().isBannerLoaded.isTrue) {
+        getIt<AdService>().bannerAd!.dispose();
+      }
+    }
     super.dispose();
   }
 
@@ -131,6 +141,5 @@ class ShowPostPageController extends GetxController {
     if (!isNullEmptyOrFalse(homeController!.post[Index.value].videoThumbnail)) {
       flickManager!.value.dispose();
     }
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   }
 }

@@ -23,8 +23,9 @@ class LikeScreenView extends GetView<LikeScreenController> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
+        await getIt<AdService>().bannerAd!.dispose();
+        await getIt<AdService>().initBannerAds();
         Get.toNamed(Routes.HOME);
-
         return await true;
       },
       child: GetBuilder<LikeScreenController>(
@@ -46,6 +47,8 @@ class LikeScreenView extends GetView<LikeScreenController> {
                   ),
                   leading: GestureDetector(
                     onTap: () async {
+                      await getIt<AdService>().bannerAd!.dispose();
+                      await getIt<AdService>().initBannerAds();
                       Get.toNamed(Routes.HOME);
                     },
                     child: Container(
@@ -101,7 +104,7 @@ class LikeScreenView extends GetView<LikeScreenController> {
                                       print(DateTime.now()
                                           .microsecondsSinceEpoch);
                                       return GestureDetector(
-                                        onTap: () {
+                                        onTap: () async {
                                           int i = 0;
                                           int Index = 0;
                                           controller.homeController!.post
@@ -116,6 +119,11 @@ class LikeScreenView extends GetView<LikeScreenController> {
                                             }
                                             i++;
                                           });
+                                          await getIt<AdService>()
+                                              .bannerAd!
+                                              .dispose();
+                                          await getIt<AdService>()
+                                              .initBannerAds();
                                           Get.toNamed(Routes.SHOW_POST_PAGE,
                                               arguments: {
                                                 ArgumentConstant.index: Index,
@@ -210,7 +218,11 @@ class LikeScreenView extends GetView<LikeScreenController> {
                           );
                         }),
                       ),
-                      // getIt<AdService>().getBanners(),
+                      (controller.isAddShow.isTrue)
+                          ? getIt<AdService>().isBannerLoaded.isTrue
+                              ? getIt<AdService>().getBannerAds()
+                              : SizedBox()
+                          : SizedBox(),
                     ],
                   ),
                 ),
