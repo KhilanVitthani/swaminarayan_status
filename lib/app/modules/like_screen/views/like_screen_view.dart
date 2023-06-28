@@ -16,11 +16,14 @@ import '../../../models/daily_thought_model.dart';
 import '../../../routes/app_pages.dart';
 import '../controllers/like_screen_controller.dart';
 
-class LikeScreenView extends GetView<LikeScreenController> {
+class LikeScreenView extends GetWidget<LikeScreenController> {
   const LikeScreenView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    if (getIt<TimerService>().is40SecCompleted) {
+      controller.initInterstitialAdAds();
+    }
     return WillPopScope(
       onWillPop: () async {
         await getIt<AdService>().bannerAd!.dispose();
