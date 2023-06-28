@@ -42,19 +42,24 @@ class AdService {
   }
 
   initBannerAds() {
-    bannerAd = BannerAd(
-        size: AdSize.banner,
-        adUnitId: "ca-app-pub-3940256099942544/6300978111",
-        listener: BannerAdListener(
-          onAdLoaded: (ad) {
-            isBannerLoaded.value = true;
-          },
-          onAdFailedToLoad: (ad, error) {
-            ad.dispose();
-          },
-        ),
-        request: AdRequest())
-      ..load();
+    FireController().adsVisible().then((value) {
+      isVisible.value = value;
+    });
+    if (isVisible.isTrue) {
+      bannerAd = BannerAd(
+          size: AdSize.banner,
+          adUnitId: "ca-app-pub-3940256099942544/6300978111",
+          listener: BannerAdListener(
+            onAdLoaded: (ad) {
+              isBannerLoaded.value = true;
+            },
+            onAdFailedToLoad: (ad, error) {
+              ad.dispose();
+            },
+          ),
+          request: AdRequest())
+        ..load();
+    }
   }
 
   Widget getBannerAds() {
@@ -76,5 +81,9 @@ class AdService {
     } else {
       return SizedBox();
     }
+  }
+
+  dispose() {
+    bannerAd?.dispose().then((value) => isBannerLoaded.value = false);
   }
 }

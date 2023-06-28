@@ -583,6 +583,8 @@ class HomeView extends GetWidget<HomeController> {
                                 Spacer(),
                                 GestureDetector(
                                   onTap: () {
+                                    getIt<AdService>().dispose();
+                                    getIt<AdService>().initBannerAds();
                                     Get.toNamed(Routes.ALL_POST_SCREEN);
                                   },
                                   child: Container(

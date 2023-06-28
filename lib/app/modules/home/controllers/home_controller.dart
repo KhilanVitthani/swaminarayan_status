@@ -161,12 +161,10 @@ class HomeController extends GetxController {
 
   @override
   void onClose() {
+    getIt<AdService>().dispose();
     if (!isNullEmptyOrFalse(isAddShow.value)) {
       if (isAdLoaded.value) {
         interstitialAd!.dispose();
-      }
-      if (getIt<AdService>().isBannerLoaded.isTrue) {
-        getIt<AdService>().bannerAd!.dispose();
       }
     }
     if (isVideo.isTrue) {
