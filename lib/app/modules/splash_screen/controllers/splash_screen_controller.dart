@@ -30,9 +30,7 @@ class SplashScreenController extends GetxController {
         isFirstTime.value = box.read(ArgumentConstant.isFirstTime);
       }
       if (isNullEmptyOrFalse(isFirstTime)) {
-        Timer(Duration(seconds: 5), () {
-          time();
-        });
+        time();
       } else {
         time();
       }
