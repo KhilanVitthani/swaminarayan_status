@@ -335,7 +335,7 @@ class HomeView extends GetWidget<HomeController> {
                                                                               .post
                                                                               .where((e) => e.isDaily!.isTrue)
                                                                               .toList()[index]
-                                                                              .dateTime
+                                                                              .uId
                                                                               .toString()
                                                                               .trim());
                                                                     } else {
@@ -344,7 +344,7 @@ class HomeView extends GetWidget<HomeController> {
                                                                               .post
                                                                               .where((e) => e.isDaily!.isTrue)
                                                                               .toList()[index]
-                                                                              .dateTime
+                                                                              .uId
                                                                               .toString()
                                                                               .trim());
                                                                     }

@@ -46,10 +46,7 @@ class HomeController extends GetxController {
       }
       await FireController().getPostData().then((value) {
         value.reversed.forEach((element) {
-          if (likeList.any((e) => e == element.dateTime.toString())) {
-            print("true ==========================  $element");
-          }
-          if (likeList.any((e) => e == element.dateTime.toString())) {
+          if (likeList.any((e) => e == element.uId.toString())) {
             element.isLiked!.value = true;
           }
           if (!post.contains(element)) {
@@ -64,10 +61,7 @@ class HomeController extends GetxController {
       });
       await FireController().getDailyData().then((value) {
         value.reversed.forEach((element) {
-          if (likeList.contains(element.dateTime)) {
-            print("true ==========================  $element");
-          }
-          if (likeList.contains(element.dateTime.toString())) {
+          if (likeList.contains(element.uId.toString())) {
             element.isLiked!.value = true;
           }
           if (!post.contains(element)) {
