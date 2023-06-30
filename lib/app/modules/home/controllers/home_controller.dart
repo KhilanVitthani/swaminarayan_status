@@ -40,26 +40,16 @@ class HomeController extends GetxController {
         await getIt<AdService>().initBannerAds();
         getIt<TimerService>().verifyTimer();
       });
-      await FireController().getDailyData().then((value) {
-        value.reversed.forEach((element) {
-          if (likeList.contains(element.dateTime.toString())) {
-            element.isLiked!.value = true;
-          }
-          if (!post.contains(element)) {
-            element.isDaily!.value = true;
-            post.add(element);
-            print(element.isDaily);
-          }
-        });
-        print("DaiLength := ${value.length}");
 
-        update();
-      }).catchError((error) {
-        print(error);
-      });
+      if (!isNullEmptyOrFalse(box.read(ArgumentConstant.likeList))) {
+        likeList = (jsonDecode(box.read(ArgumentConstant.likeList))).toList();
+      }
       await FireController().getPostData().then((value) {
         value.reversed.forEach((element) {
-          if (likeList.contains(element.dateTime.toString())) {
+          if (likeList.any((e) => e == element.dateTime.toString())) {
+            print("true ==========================  $element");
+          }
+          if (likeList.any((e) => e == element.dateTime.toString())) {
             element.isLiked!.value = true;
           }
           if (!post.contains(element)) {
@@ -74,6 +64,9 @@ class HomeController extends GetxController {
       });
       await FireController().getDailyData().then((value) {
         value.reversed.forEach((element) {
+          if (likeList.contains(element.dateTime)) {
+            print("true ==========================  $element");
+          }
           if (likeList.contains(element.dateTime.toString())) {
             element.isLiked!.value = true;
           }
@@ -89,9 +82,6 @@ class HomeController extends GetxController {
       }).catchError((error) {
         print(error);
       });
-      if (!isNullEmptyOrFalse(box.read(ArgumentConstant.likeList))) {
-        likeList = (jsonDecode(box.read(ArgumentConstant.likeList))).toList();
-      }
       box.write(ArgumentConstant.isFirstTime, false);
       if (getIt<TimerService>().is40SecCompleted) {
         await initInterstitialAdAds();
