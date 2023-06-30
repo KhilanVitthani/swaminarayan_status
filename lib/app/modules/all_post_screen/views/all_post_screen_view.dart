@@ -21,10 +21,14 @@ class AllPostScreenView extends GetWidget<AllPostScreenController> {
 
   @override
   Widget build(BuildContext context) {
+    if (getIt<TimerService>().is40SecCompleted) {
+      controller.initInterstitialAdAds();
+    }
     return WillPopScope(
       onWillPop: () async {
+        await getIt<AdService>().bannerAd!.dispose();
+        await getIt<AdService>().initBannerAds();
         Get.toNamed(Routes.HOME);
-
         return await true;
       },
       child: GetBuilder<AllPostScreenController>(
@@ -43,6 +47,8 @@ class AllPostScreenView extends GetWidget<AllPostScreenController> {
                   centerTitle: true,
                   leading: GestureDetector(
                     onTap: () async {
+                      await getIt<AdService>().bannerAd!.dispose();
+                      await getIt<AdService>().initBannerAds();
                       Get.toNamed(Routes.HOME);
                     },
                     child: Container(
@@ -81,21 +87,26 @@ class AllPostScreenView extends GetWidget<AllPostScreenController> {
                                         .isTrue)
                                     ? null
                                     : GestureDetector(
-                                        onTap: () {
+                                        onTap: () async {
                                           int i = 0;
                                           int Index = 0;
                                           controller.homeController!.post
                                               .forEach((element) {
-                                            if (element.uId ==
+                                            if (element.dateTime ==
                                                 controller.homeController!.post
                                                     .where((e) =>
                                                         e.isDaily!.isFalse)
                                                     .toList()[index]
-                                                    .uId) {
+                                                    .dateTime) {
                                               Index = i;
                                             }
                                             i++;
                                           });
+                                          await getIt<AdService>()
+                                              .bannerAd!
+                                              .dispose();
+                                          await getIt<AdService>()
+                                              .initBannerAds();
                                           Get.toNamed(Routes.SHOW_POST_PAGE,
                                               arguments: {
                                                 ArgumentConstant.index: Index,
@@ -200,7 +211,11 @@ class AllPostScreenView extends GetWidget<AllPostScreenController> {
                                   .length),
                         ),
                       ),
-                      getIt<AdService>().getBanners(),
+                      (controller.isAddShow.isTrue)
+                          ? getIt<AdService>().isBannerLoaded.isTrue
+                              ? getIt<AdService>().getBannerAds()
+                              : SizedBox()
+                          : SizedBox(),
                     ],
                   ),
                 ),

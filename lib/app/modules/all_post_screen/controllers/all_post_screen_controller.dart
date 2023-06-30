@@ -1,11 +1,12 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:swaminarayan_status/app/modules/home/controllers/home_controller.dart';
-import 'package:yodo1mas/Yodo1MAS.dart';
-
 import '../../../../constants/api_constants.dart';
+import '../../../../constants/firebase_controller.dart';
 import '../../../../constants/sizeConstant.dart';
 import '../../../../main.dart';
 import '../../../../utilities/ad_service.dart';
@@ -15,53 +16,51 @@ import '../../../routes/app_pages.dart';
 class AllPostScreenController extends GetxController {
   List likeList = [];
   HomeController? homeController;
+  RxBool isAddShow = false.obs;
+  InterstitialAd? interstitialAd;
+  RxBool isAdLoaded = false.obs;
   @override
   void onInit() {
-    if (!isNullEmptyOrFalse(box.read(ArgumentConstant.likeList))) {
-      likeList = (jsonDecode(box.read(ArgumentConstant.likeList))).toList();
-    }
     Get.lazyPut(() => HomeController());
     homeController = Get.find<HomeController>();
-    update();
-    if (getIt<TimerService>().is40SecCompleted) {
-      ads();
-    }
-    Yodo1MAS.instance.setInterstitialListener((event, message) {
-      switch (event) {
-        case Yodo1MAS.AD_EVENT_OPENED:
-          print('Interstitial AD_EVENT_OPENED');
-          SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-          break;
-        case Yodo1MAS.AD_EVENT_ERROR:
-          getIt<TimerService>().verifyTimer();
-          SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-          Get.back();
-          print('Interstitial AD_EVENT_ERROR' + message);
-          break;
-        case Yodo1MAS.AD_EVENT_CLOSED:
-          getIt<TimerService>().verifyTimer();
-          SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-          Get.back();
-          break;
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      if (!isNullEmptyOrFalse(box.read(ArgumentConstant.likeList))) {
+        likeList = (jsonDecode(box.read(ArgumentConstant.likeList))).toList();
+      }
+      await FireController().adsVisible().then((value) async {
+        isAddShow.value = value;
+        await getIt<AdService>().initBannerAds();
+        getIt<TimerService>().verifyTimer();
+      });
+      update();
+      if (getIt<TimerService>().is40SecCompleted) {
+        await initInterstitialAdAds();
       }
     });
     super.onInit();
   }
 
-  Future<void> ads() async {
-    await getIt<AdService>()
-        .getAd(
-      adType: AdService.interstitialAd,
-    )
-        .then((value) {
-      SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-      if (!value) {
-        SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-        Get.back();
-      }
-    }).catchError((error) {
-      print("Error := $error");
-    });
+  initInterstitialAdAds() async {
+    InterstitialAd.load(
+        adUnitId: "ca-app-pub-3940256099942544/1033173712",
+        request: AdRequest(),
+        adLoadCallback: InterstitialAdLoadCallback(
+          onAdLoaded: (ad) {
+            interstitialAd = ad;
+            isAdLoaded.value = true;
+            if (!isNullEmptyOrFalse(isAddShow.value)) {
+              if (isAdLoaded.value) {
+                interstitialAd!.show().then((value) {
+                  getIt<TimerService>().verifyTimer();
+                });
+              }
+            }
+          },
+          onAdFailedToLoad: (error) {
+            getIt<TimerService>().verifyTimer();
+            interstitialAd!.dispose();
+          },
+        ));
   }
 
   @override
@@ -71,6 +70,14 @@ class AllPostScreenController extends GetxController {
 
   @override
   void onClose() {
+    if (!isNullEmptyOrFalse(isAddShow.value)) {
+      if (isAdLoaded.value) {
+        interstitialAd!.dispose();
+      }
+      if (getIt<AdService>().isBannerLoaded.isTrue) {
+        getIt<AdService>().bannerAd!.dispose();
+      }
+    }
     super.onClose();
   }
 }

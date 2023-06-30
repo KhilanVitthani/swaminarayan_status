@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:swaminarayan_status/app/models/daily_thought_model.dart';
 import 'package:swaminarayan_status/app/routes/app_pages.dart';
 import 'package:swaminarayan_status/constants/api_constants.dart';
@@ -22,14 +23,18 @@ import '../../../../constants/firebase_controller.dart';
 import '../../../../constants/sizeConstant.dart';
 import '../../../../main.dart';
 import '../../../../utilities/ad_service.dart';
+import '../../../../utilities/timer_service.dart';
 import '../controllers/home_controller.dart';
 
-class HomeView extends GetView<HomeController> {
+class HomeView extends GetWidget<HomeController> {
   const HomeView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     MySize().init(context);
+    if (getIt<TimerService>().is40SecCompleted) {
+      controller.initInterstitialAdAds();
+    }
     return WillPopScope(
       onWillPop: () async {
         SystemNavigator.pop();
@@ -59,8 +64,10 @@ class HomeView extends GetView<HomeController> {
                   ),
                   actions: [
                     GestureDetector(
-                      onTap: () {
+                      onTap: () async {
                         // FireController().addData();
+                        await getIt<AdService>().bannerAd!.dispose();
+                        await getIt<AdService>().initBannerAds();
                         Get.toNamed(Routes.LIKE_SCREEN);
                       },
                       child: Container(
@@ -138,22 +145,27 @@ class HomeView extends GetView<HomeController> {
                                           children: [
                                             Expanded(
                                               child: GestureDetector(
-                                                onTap: () {
+                                                onTap: () async {
                                                   int i = 0;
                                                   int Index = 0;
                                                   controller.post
                                                       .forEach((element) {
-                                                    if (element.uId ==
+                                                    if (element.dateTime ==
                                                         controller.post
                                                             .where((e) => e
                                                                 .isDaily!
                                                                 .isTrue)
                                                             .toList()[index]
-                                                            .uId) {
+                                                            .dateTime) {
                                                       Index = i;
                                                     }
                                                     i++;
                                                   });
+                                                  await getIt<AdService>()
+                                                      .bannerAd!
+                                                      .dispose();
+                                                  await getIt<AdService>()
+                                                      .initBannerAds();
                                                   Get.toNamed(
                                                       Routes.SHOW_POST_PAGE,
                                                       arguments: {
@@ -323,7 +335,7 @@ class HomeView extends GetView<HomeController> {
                                                                               .post
                                                                               .where((e) => e.isDaily!.isTrue)
                                                                               .toList()[index]
-                                                                              .uId
+                                                                              .dateTime
                                                                               .toString()
                                                                               .trim());
                                                                     } else {
@@ -332,7 +344,7 @@ class HomeView extends GetView<HomeController> {
                                                                               .post
                                                                               .where((e) => e.isDaily!.isTrue)
                                                                               .toList()[index]
-                                                                              .uId
+                                                                              .dateTime
                                                                               .toString()
                                                                               .trim());
                                                                     }
@@ -370,8 +382,8 @@ class HomeView extends GetView<HomeController> {
                                                               GestureDetector(
                                                                 onTap:
                                                                     () async {
-                                                                  controller
-                                                                      .ads();
+                                                                  await controller
+                                                                      .initInterstitialAdAds();
                                                                   if (isNullEmptyOrFalse(controller
                                                                       .post
                                                                       .where((e) => e
@@ -558,7 +570,11 @@ class HomeView extends GetView<HomeController> {
                           stream: FireController().getDailyThought(),
                         ),
                       ),
-                      getIt<AdService>().getBanners(),
+                      (controller.isAddShow.isTrue)
+                          ? getIt<AdService>().isBannerLoaded.isTrue
+                              ? getIt<AdService>().getBannerAds()
+                              : SizedBox()
+                          : SizedBox(),
                       Padding(
                         padding: EdgeInsets.only(
                             left: MySize.getWidth(10),
@@ -577,7 +593,11 @@ class HomeView extends GetView<HomeController> {
                                 ),
                                 Spacer(),
                                 GestureDetector(
-                                  onTap: () {
+                                  onTap: () async {
+                                    await getIt<AdService>()
+                                        .bannerAd!
+                                        .dispose();
+                                    await getIt<AdService>().initBannerAds();
                                     Get.toNamed(Routes.ALL_POST_SCREEN);
                                   },
                                   child: Container(
@@ -605,37 +625,6 @@ class HomeView extends GetView<HomeController> {
                             Spacing.height(
                               MySize.getHeight(10),
                             ),
-                            // StreamBuilder<QuerySnapshot>(
-                            //   builder: (context, data) {
-                            //     if (data.connectionState ==
-                            //         ConnectionState.waiting) {
-                            //       print("object");
-                            //       return SizedBox();
-                            //     } else if (data.hasError) {
-                            //       print("object");
-                            //       return SizedBox();
-                            //     } else {
-                            //       for (int i = 0;
-                            //           i < data.data!.docs.length;
-                            //           i++) {
-                            //         dailyThoughtModel dataModel =
-                            //             dailyThoughtModel.fromJson(
-                            //           data.data!
-                            //               .docs[data.data!.docs.length - i - 1]
-                            //               .data() as Map<String, dynamic>,
-                            //         );
-                            //         (controller.post.length >=
-                            //                 data.data!.docs.length)
-                            //             ? null
-                            //             : controller.post.add(dataModel);
-                            //       }
-                            //         controller.post.refresh();
-                            //       print(controller.post.length);
-                            //       return SizedBox();
-                            //     }
-                            //   },
-                            //   stream: FireController().getPost(),
-                            // ),
                           ],
                         ),
                       ),
@@ -656,12 +645,10 @@ class HomeView extends GetView<HomeController> {
                                     mainAxisSpacing: MySize.getHeight(2),
                                   ),
                                   itemBuilder: (context, index) {
-                                    // if (controller.likeList.contains(controller.post.where((e) => e.isDaily!.isFalse).toList()[index].uId)) {
-                                    //   controller.post.where((e) => e.isDaily!.isFalse).toList()[index]
-                                    //       .isLiked!.value = true;
-                                    // }
-                                    print(
-                                        DateTime.now().microsecondsSinceEpoch);
+                                    print(controller.post
+                                        .where((e) => e.isDaily!.isFalse)
+                                        .toList()[index]
+                                        .dateTime);
                                     return (controller.post
                                             .where((e) => e.isDaily!.isFalse)
                                             .toList()[index]
@@ -669,21 +656,26 @@ class HomeView extends GetView<HomeController> {
                                             .isTrue)
                                         ? null
                                         : GestureDetector(
-                                            onTap: () {
+                                            onTap: () async {
                                               int i = 0;
                                               int Index = 0;
                                               controller.post
                                                   .forEach((element) {
-                                                if (element.uId ==
+                                                if (element.dateTime ==
                                                     controller.post
                                                         .where((e) =>
                                                             e.isDaily!.isFalse)
                                                         .toList()[index]
-                                                        .uId) {
+                                                        .dateTime) {
                                                   Index = i;
                                                 }
                                                 i++;
                                               });
+                                              await getIt<AdService>()
+                                                  .bannerAd!
+                                                  .dispose();
+                                              await getIt<AdService>()
+                                                  .initBannerAds();
                                               Get.toNamed(Routes.SHOW_POST_PAGE,
                                                   arguments: {
                                                     ArgumentConstant.index:

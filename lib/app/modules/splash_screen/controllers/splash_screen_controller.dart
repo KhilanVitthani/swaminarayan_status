@@ -1,5 +1,8 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:flutter/foundation.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:swaminarayan_status/app/routes/app_pages.dart';
 import 'package:swaminarayan_status/constants/api_constants.dart';
 import 'package:swaminarayan_status/main.dart';
@@ -7,7 +10,6 @@ import 'package:swaminarayan_status/utilities/timer_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:yodo1mas/Yodo1MAS.dart';
 
 import '../../../../constants/firebase_controller.dart';
 import '../../../../constants/sizeConstant.dart';
@@ -15,11 +17,14 @@ import '../../../../utilities/ad_service.dart';
 
 class SplashScreenController extends GetxController {
   RxBool isFirstTime = true.obs;
+  RxBool isAddShow = false.obs;
+  InterstitialAd? interstitialAd;
+  RxBool isAdLoaded = false.obs;
   @override
   void onInit() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await FireController().adsVisible().then((value) {
-        print(value);
+        isAddShow.value = value;
       });
       if (!isNullEmptyOrFalse(box.read(ArgumentConstant.isFirstTime))) {
         isFirstTime.value = box.read(ArgumentConstant.isFirstTime);
@@ -29,57 +34,44 @@ class SplashScreenController extends GetxController {
           Get.offAllNamed(Routes.HOME);
         });
       } else {
-        await ads();
+        await initInterstitialAdAds();
       }
-      Yodo1MAS.instance.setInterstitialListener((event, message) {
-        switch (event) {
-          case Yodo1MAS.AD_EVENT_OPENED:
-            print('Interstitial AD_EVENT_OPENED');
-            break;
-          case Yodo1MAS.AD_EVENT_ERROR:
-            getIt<TimerService>().verifyTimer();
-            SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-            Get.offAndToNamed(Routes.HOME);
-            print('Interstitial AD_EVENT_ERROR' + message);
-            break;
-          case Yodo1MAS.AD_EVENT_CLOSED:
-            getIt<TimerService>().verifyTimer();
-            SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-            Get.offAndToNamed(Routes.HOME);
-            break;
-        }
-      });
     });
 
     super.onInit();
   }
 
   time() async {
-    (AdService.isVisible.isTrue)
-        ? await Timer(Duration(seconds: 8), () async {
-            ads();
-          })
-        : await Timer(Duration(seconds: 5), () async {
-            Get.offAllNamed(Routes.HOME);
+   await Timer(Duration(seconds: 5), () async {
+            await initInterstitialAdAds();
           });
   }
 
-  ads() async {
-    await getIt<AdService>()
-        .getAd(adType: AdService.interstitialAd)
-        .then((value) {
-      if (!value) {
-        SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-        Get.offAndToNamed(Routes.HOME);
-      } else {
-        Future.delayed(Duration(seconds: 5)).then((value) {
-          SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-          Get.offAndToNamed(Routes.HOME);
-        });
-      }
-    }).catchError((error) {
-      print("Error := $error");
-    });
+  initInterstitialAdAds() async {
+    InterstitialAd.load(
+        adUnitId: "ca-app-pub-3940256099942544/1033173712",
+        request: AdRequest(),
+        adLoadCallback: InterstitialAdLoadCallback(
+          onAdLoaded: (ad) async {
+            interstitialAd = ad;
+            isAdLoaded.value = true;
+            if (!isNullEmptyOrFalse(isAddShow.value)) {
+              if (isAdLoaded.value) {
+                interstitialAd!.show().then((value) {
+                  Get.offAllNamed(Routes.HOME);
+                });
+              } else {
+                Get.offAllNamed(Routes.HOME);
+              }
+            } else {
+              Get.offAllNamed(Routes.HOME);
+            }
+          },
+          onAdFailedToLoad: (error) {
+            Get.offAllNamed(Routes.HOME);
+            interstitialAd!.dispose();
+          },
+        ));
   }
 
   @override
@@ -89,6 +81,10 @@ class SplashScreenController extends GetxController {
 
   @override
   void onClose() {
+    if(isAdLoaded.value)
+      {
+        interstitialAd!.dispose();
+      }
     super.onClose();
   }
 }

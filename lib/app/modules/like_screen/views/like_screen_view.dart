@@ -16,15 +16,19 @@ import '../../../models/daily_thought_model.dart';
 import '../../../routes/app_pages.dart';
 import '../controllers/like_screen_controller.dart';
 
-class LikeScreenView extends GetView<LikeScreenController> {
+class LikeScreenView extends GetWidget<LikeScreenController> {
   const LikeScreenView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    if (getIt<TimerService>().is40SecCompleted) {
+      controller.initInterstitialAdAds();
+    }
     return WillPopScope(
       onWillPop: () async {
+        await getIt<AdService>().bannerAd!.dispose();
+        await getIt<AdService>().initBannerAds();
         Get.toNamed(Routes.HOME);
-
         return await true;
       },
       child: GetBuilder<LikeScreenController>(
@@ -46,6 +50,8 @@ class LikeScreenView extends GetView<LikeScreenController> {
                   ),
                   leading: GestureDetector(
                     onTap: () async {
+                      await getIt<AdService>().bannerAd!.dispose();
+                      await getIt<AdService>().initBannerAds();
                       Get.toNamed(Routes.HOME);
                     },
                     child: Container(
@@ -101,21 +107,26 @@ class LikeScreenView extends GetView<LikeScreenController> {
                                       print(DateTime.now()
                                           .microsecondsSinceEpoch);
                                       return GestureDetector(
-                                        onTap: () {
+                                        onTap: () async {
                                           int i = 0;
                                           int Index = 0;
                                           controller.homeController!.post
                                               .forEach((element) {
-                                            if (element.uId ==
+                                            if (element.dateTime ==
                                                 controller.homeController!.post
                                                     .where((e) =>
                                                         e.isLiked!.isTrue)
                                                     .toList()[index]
-                                                    .uId) {
+                                                    .dateTime) {
                                               Index = i;
                                             }
                                             i++;
                                           });
+                                          await getIt<AdService>()
+                                              .bannerAd!
+                                              .dispose();
+                                          await getIt<AdService>()
+                                              .initBannerAds();
                                           Get.toNamed(Routes.SHOW_POST_PAGE,
                                               arguments: {
                                                 ArgumentConstant.index: Index,
@@ -210,7 +221,11 @@ class LikeScreenView extends GetView<LikeScreenController> {
                           );
                         }),
                       ),
-                      getIt<AdService>().getBanners(),
+                      (controller.isAddShow.isTrue)
+                          ? getIt<AdService>().isBannerLoaded.isTrue
+                              ? getIt<AdService>().getBannerAds()
+                              : SizedBox()
+                          : SizedBox(),
                     ],
                   ),
                 ),

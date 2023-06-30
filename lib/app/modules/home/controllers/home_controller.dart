@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:swaminarayan_status/app/models/daily_thought_model.dart';
 import 'package:swaminarayan_status/constants/api_constants.dart';
 import 'package:swaminarayan_status/constants/sizeConstant.dart';
@@ -11,8 +12,6 @@ import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
-import 'package:yodo1mas/Yodo1MAS.dart';
-
 import '../../../../constants/firebase_controller.dart';
 import '../../../../utilities/ad_service.dart';
 import '../../../../utilities/timer_service.dart';
@@ -28,92 +27,97 @@ class HomeController extends GetxController {
   List likeList = [];
   Rx<FlickManager>? flickManager;
   RxString? mediaLink = "".obs;
+  InterstitialAd? interstitialAd;
+  RxBool isAdLoaded = false.obs;
+  // BannerAd? bannerAd;
+  // RxBool isBannerLoaded = false.obs;
+  RxBool isAddShow = false.obs;
   @override
-  void onInit() {
-    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-    //   if (!isNullEmptyOrFalse(Get.arguments)) {
-    //     if (!isNullEmptyOrFalse(Get.arguments[ArgumentConstant.isFromSplash])) {
-    //       // await ads();
-    //     }
-    //   }
-    // });
-    FireController().getPostData().then((value) {
-      value.reversed.forEach((element) {
-        if (!post.contains(element)) {
-          element.isDaily!.value = false;
-          post.add(element);
-        }
+  Future<void> onInit() async {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await FireController().adsVisible().then((value) async {
+        isAddShow.value = value;
+        await getIt<AdService>().initBannerAds();
+        getIt<TimerService>().verifyTimer();
       });
-      print("Length := ${post.length}");
-      update();
-    }).catchError((error) {
-      print(error);
-    });
-    FireController().getDailyData().then((value) {
-      value.reversed.forEach((element) {
-        if (!post.contains(element)) {
-          element.isDaily!.value = true;
-          post.add(element);
-          print(element.isDaily);
-        }
+
+      if (!isNullEmptyOrFalse(box.read(ArgumentConstant.likeList))) {
+        likeList = (jsonDecode(box.read(ArgumentConstant.likeList))).toList();
+      }
+      await FireController().getPostData().then((value) {
+        value.reversed.forEach((element) {
+          if (likeList.any((e) => e == element.dateTime.toString())) {
+            print("true ==========================  $element");
+          }
+          if (likeList.any((e) => e == element.dateTime.toString())) {
+            element.isLiked!.value = true;
+          }
+          if (!post.contains(element)) {
+            element.isDaily!.value = false;
+            post.add(element);
+          }
+        });
+        print("Length := ${post.length}");
+        update();
+      }).catchError((error) {
+        print(error);
       });
-      print("DaiLength := ${value.length}");
-
-      update();
-    }).catchError((error) {
-      print(error);
-    });
-
-    box.write(ArgumentConstant.isFirstTime, false);
-    if (!isNullEmptyOrFalse(box.read(ArgumentConstant.likeList))) {
-      likeList = (jsonDecode(box.read(ArgumentConstant.likeList))).toList();
-    }
-    if (getIt<TimerService>().is40SecCompleted) {
-      ads();
-    }
-    Yodo1MAS.instance.setInterstitialListener((event, message) {
-      switch (event) {
-        case Yodo1MAS.AD_EVENT_OPENED:
-          print('Interstitial AD_EVENT_OPENED');
-          SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-          break;
-        case Yodo1MAS.AD_EVENT_ERROR:
-          getIt<TimerService>().verifyTimer();
-          SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-          if (!isNullEmptyOrFalse(mediaLink)) {
-            getVideo(mediaLink: mediaLink!.value);
+      await FireController().getDailyData().then((value) {
+        value.reversed.forEach((element) {
+          if (likeList.contains(element.dateTime)) {
+            print("true ==========================  $element");
           }
-          Get.back();
-          print('Interstitial AD_EVENT_ERROR' + message);
-          break;
-        case Yodo1MAS.AD_EVENT_CLOSED:
-          getIt<TimerService>().verifyTimer();
-          SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-          if (!isNullEmptyOrFalse(mediaLink)) {
-            getVideo(mediaLink: mediaLink!.value);
+          if (likeList.contains(element.dateTime.toString())) {
+            element.isLiked!.value = true;
           }
-          Get.back();
-          break;
+          if (!post.contains(element)) {
+            element.isDaily!.value = true;
+            post.add(element);
+            print(element.isDaily);
+          }
+        });
+        print("DaiLength := ${value.length}");
+
+        update();
+      }).catchError((error) {
+        print(error);
+      });
+      box.write(ArgumentConstant.isFirstTime, false);
+      if (getIt<TimerService>().is40SecCompleted) {
+        await initInterstitialAdAds();
       }
     });
     super.onInit();
   }
 
-  //
-  Future<void> ads() async {
-    await getIt<AdService>()
-        .getAd(
-      adType: AdService.interstitialAd,
-    )
-        .then((value) {
-      SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-      if (!value) {
-        SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-        Get.back();
-      }
-    }).catchError((error) {
-      print("Error := $error");
-    });
+  initInterstitialAdAds() async {
+    InterstitialAd.load(
+        adUnitId: "ca-app-pub-3940256099942544/1033173712",
+        request: AdRequest(),
+        adLoadCallback: InterstitialAdLoadCallback(
+          onAdLoaded: (ad) {
+            interstitialAd = ad;
+            isAdLoaded.value = true;
+            if (!isNullEmptyOrFalse(isAddShow.value)) {
+              if (isAdLoaded.value) {
+                interstitialAd!.show().then((value) {
+                  getIt<TimerService>().verifyTimer();
+                  if (!isNullEmptyOrFalse(mediaLink)) {
+                    getVideo(mediaLink: mediaLink!.value);
+                  }
+                });
+              }
+            }
+          },
+          onAdFailedToLoad: (error) {
+            getIt<TimerService>().verifyTimer();
+            if (!isNullEmptyOrFalse(mediaLink)) {
+              getVideo(mediaLink: mediaLink!.value);
+            }
+            // Get.back();
+            interstitialAd!.dispose();
+          },
+        ));
   }
 
   addDataToLike({
@@ -164,6 +168,12 @@ class HomeController extends GetxController {
 
   @override
   void onClose() {
+    getIt<AdService>().dispose();
+    if (!isNullEmptyOrFalse(isAddShow.value)) {
+      if (isAdLoaded.value) {
+        interstitialAd!.dispose();
+      }
+    }
     if (isVideo.isTrue) {
       flickManager!.value.dispose();
     }
