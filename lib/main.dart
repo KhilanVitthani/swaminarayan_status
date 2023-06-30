@@ -59,7 +59,7 @@ void main() async {
         fontFamily: 'Sf_pro_display',
       ),
       debugShowCheckedModeBanner: false,
-      title: "Application",
+      title: "Swaminarayan Status",
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
     ),
