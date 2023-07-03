@@ -22,7 +22,7 @@ class GoogleAdsController extends GetxController with WidgetsBindingObserver {
 
   loadAppOpenAd() {
     AppOpenAd.load(
-        adUnitId: "ca-app-pub-3940256099942544/3419835294",
+        adUnitId: "ca-app-pub-8608272927918158/5429978279",
         request: const AdRequest(),
         adLoadCallback: AppOpenAdLoadCallback(
             onAdLoaded: (ad) {

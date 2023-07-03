@@ -72,7 +72,7 @@ class ShowPostPageController extends GetxController {
 
   initInterstitialAdAds() async {
     InterstitialAd.load(
-        adUnitId: "ca-app-pub-3940256099942544/1033173712",
+        adUnitId: "ca-app-pub-8608272927918158/3845433861",
         request: AdRequest(),
         adLoadCallback: InterstitialAdLoadCallback(
           onAdLoaded: (ad) {

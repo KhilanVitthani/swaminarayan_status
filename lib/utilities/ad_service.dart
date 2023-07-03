@@ -48,7 +48,7 @@ class AdService {
     if (isVisible.isTrue) {
       bannerAd = BannerAd(
           size: AdSize.banner,
-          adUnitId: "ca-app-pub-3940256099942544/6300978111",
+          adUnitId: "ca-app-pub-8608272927918158/5579836291",
           listener: BannerAdListener(
             onAdLoaded: (ad) {
               isBannerLoaded.value = true;
