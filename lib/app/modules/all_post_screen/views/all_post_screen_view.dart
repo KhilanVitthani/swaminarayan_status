@@ -68,6 +68,7 @@ class AllPostScreenView extends GetWidget<AllPostScreenController> {
                         child: Container(
                           child: GridView.builder(
                               shrinkWrap: true,
+                              physics: BouncingScrollPhysics(),
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 3,

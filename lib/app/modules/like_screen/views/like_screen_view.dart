@@ -93,6 +93,7 @@ class LikeScreenView extends GetWidget<LikeScreenController> {
                                   )
                                 : GridView.builder(
                                     shrinkWrap: true,
+                                    physics: BouncingScrollPhysics(),
                                     gridDelegate:
                                         SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount: 3,
