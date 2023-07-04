@@ -14,6 +14,8 @@ class ArgumentConstant {
   static const isFromSplash = "isFromSplash";
   static const isFirstTime = "isFirstTime";
   static const date = "date";
+  static const shareLink =
+      "Experience the divine with Swaminarayan Video Status! Share your devotion with loved ones and spread the message of peace and harmony. Download now https://play.google.com/store/apps/details?id=com.mobileappxperts.swaminarayanvideostatus";
 }
 
 getLogOut() {

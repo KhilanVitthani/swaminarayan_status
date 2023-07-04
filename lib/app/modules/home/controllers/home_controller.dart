@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:rate_my_app/rate_my_app.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swaminarayan_status/app/models/daily_thought_model.dart';
 import 'package:swaminarayan_status/constants/api_constants.dart';
 import 'package:swaminarayan_status/constants/sizeConstant.dart';
@@ -32,8 +33,9 @@ class HomeController extends GetxController {
   RxString? mediaLink = "".obs;
   InterstitialAd? interstitialAd;
   RxBool isAdLoaded = false.obs;
-  // BannerAd? bannerAd;
-  // RxBool isBannerLoaded = false.obs;
+  SharedPreferences? prefs;
+  int launchCount = 0;
+  DateTime? currentDate;
   RxBool isAddShow = false.obs;
   RateMyApp rateMyApp = RateMyApp(
       preferencesPrefix: 'rateMyApp_',
@@ -46,6 +48,12 @@ class HomeController extends GetxController {
   @override
   Future<void> onInit() async {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await initPreferences();
+      if (shouldShowPopup()) {
+        rateMyApp.init().then((value) {
+          ShowRateUsPopup();
+        });
+      }
       await FireController().adsVisible().then((value) async {
         isAddShow.value = value;
         await getIt<AdService>().initBannerAds();
@@ -87,14 +95,32 @@ class HomeController extends GetxController {
         print(error);
       });
       box.write(ArgumentConstant.isFirstTime, false);
-      rateMyApp.init().then((value) {
-        ShowRateUsPopup();
-      });
       if (getIt<TimerService>().is40SecCompleted) {
         await initInterstitialAdAds();
       }
     });
     super.onInit();
+  }
+
+  Future<void> initPreferences() async {
+    prefs = await SharedPreferences.getInstance();
+    launchCount = prefs!.getInt('launchCount') ?? 0;
+    currentDate = DateTime.now();
+    prefs!.setString('lastLaunchDate', currentDate.toString());
+    prefs!.setInt('launchCount', launchCount + 1);
+  }
+
+  bool shouldShowPopup() {
+    final lastLaunchDate = prefs!.getString('lastLaunchDate');
+    final parsedDate = DateTime.tryParse(lastLaunchDate!);
+    final currentDate = DateTime.now();
+
+    if (parsedDate != null) {
+      final difference = currentDate.difference(parsedDate).inDays;
+      return difference >= 7 && launchCount > 7;
+    }
+
+    return false;
   }
 
   ShowRateUsPopup() {
