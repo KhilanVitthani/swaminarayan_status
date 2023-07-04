@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:rate_my_app/rate_my_app.dart';
 import 'package:swaminarayan_status/app/models/daily_thought_model.dart';
 import 'package:swaminarayan_status/constants/api_constants.dart';
 import 'package:swaminarayan_status/constants/sizeConstant.dart';
@@ -32,6 +34,14 @@ class HomeController extends GetxController {
   // BannerAd? bannerAd;
   // RxBool isBannerLoaded = false.obs;
   RxBool isAddShow = false.obs;
+  RateMyApp rateMyApp = RateMyApp(
+      preferencesPrefix: 'rateMyApp_',
+      minDays: 7,
+      minLaunches: 10,
+      remindDays: 7,
+      remindLaunches: 10,
+      googlePlayIdentifier: 'com.mobileappxperts.swaminarayanvideostatus');
+
   @override
   Future<void> onInit() async {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
@@ -40,7 +50,6 @@ class HomeController extends GetxController {
         await getIt<AdService>().initBannerAds();
         getIt<TimerService>().verifyTimer();
       });
-
       if (!isNullEmptyOrFalse(box.read(ArgumentConstant.likeList))) {
         likeList = (jsonDecode(box.read(ArgumentConstant.likeList))).toList();
       }
@@ -77,6 +86,39 @@ class HomeController extends GetxController {
         print(error);
       });
       box.write(ArgumentConstant.isFirstTime, false);
+      // rateMyApp.init().then((value) {
+      //   rateMyApp.showRateDialog(
+      //     Get.context!,
+      //     title: 'Rate this app', // The dialog title.0
+      //     message:
+      //         'If you like this app, please take a little bit of your time to review it !\nIt really helps us and it shouldn\'t take you more than one minute.', // The dialog message.
+      //     rateButton: 'RATE', // The dialog "rate" button text.
+      //     noButton: 'NO THANKS', // The dialog "no" button text.
+      //     laterButton: 'MAYBE LATER', // The dialog "later" button text.
+      //     listener: (button) {
+      //       // The button click listener (useful if you want to cancel the click event).
+      //       switch (button) {
+      //         case RateMyAppDialogButton.rate:
+      //           print('Clicked on "Rate".');
+      //           break;
+      //         case RateMyAppDialogButton.later:
+      //           print('Clicked on "Later".');
+      //           break;
+      //         case RateMyAppDialogButton.no:
+      //           print('Clicked on "No".');
+      //           break;
+      //       }
+      //
+      //       return true; // Return false if you want to cancel the click event.
+      //     },
+      //     ignoreNativeDialog: Platform
+      //         .isAndroid, // Set to false if you want to show the Apple's native app rating dialog on iOS or Google's native app rating dialog (depends on the current Platform).
+      //     dialogStyle: const DialogStyle(), // Custom dialog styles.
+      //     onDismissed: () => rateMyApp.callEvent(RateMyAppEventType
+      //         .laterButtonPressed), // Called when the user dismissed the dialog (either by taping outside or by pressing the "back" button).
+      //   );
+      // });
+
       if (getIt<TimerService>().is40SecCompleted) {
         await initInterstitialAdAds();
       }
