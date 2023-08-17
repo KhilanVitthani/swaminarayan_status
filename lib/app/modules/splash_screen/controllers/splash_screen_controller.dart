@@ -8,7 +8,6 @@ import 'package:swaminarayan_status/utilities/timer_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:yodo1mas/Yodo1MAS.dart';
 
 import '../../../../constants/firebase_controller.dart';
 import '../../../../constants/sizeConstant.dart';
@@ -36,24 +35,6 @@ class SplashScreenController extends GetxController {
           Get.offAllNamed(Routes.HOME);
         }
       }
-      Yodo1MAS.instance.setInterstitialListener((event, message) {
-        switch (event) {
-          case Yodo1MAS.AD_EVENT_OPENED:
-            print('Interstitial AD_EVENT_OPENED');
-            break;
-          case Yodo1MAS.AD_EVENT_ERROR:
-            getIt<TimerService>().verifyTimer();
-            SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-            Get.offAndToNamed(Routes.HOME);
-            print('Interstitial AD_EVENT_ERROR' + message);
-            break;
-          case Yodo1MAS.AD_EVENT_CLOSED:
-            getIt<TimerService>().verifyTimer();
-            SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-            Get.offAndToNamed(Routes.HOME);
-            break;
-        }
-      });
     });
 
     super.onInit();

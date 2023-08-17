@@ -49,6 +49,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '688032127071',
     projectId: 'swaminarayanstatus-f8550',
     authDomain: 'swaminarayanstatus-f8550.firebaseapp.com',
+    databaseURL: 'https://swaminarayanstatus-f8550-default-rtdb.firebaseio.com',
     storageBucket: 'swaminarayanstatus-f8550.appspot.com',
     measurementId: 'G-YRZZ8FF2P9',
   );
@@ -58,6 +59,7 @@ class DefaultFirebaseOptions {
     appId: '1:688032127071:android:41cb591bedc82af1c2e3ea',
     messagingSenderId: '688032127071',
     projectId: 'swaminarayanstatus-f8550',
+    databaseURL: 'https://swaminarayanstatus-f8550-default-rtdb.firebaseio.com',
     storageBucket: 'swaminarayanstatus-f8550.appspot.com',
   );
 
@@ -66,6 +68,7 @@ class DefaultFirebaseOptions {
     appId: '1:688032127071:ios:d125a7a8de3fb241c2e3ea',
     messagingSenderId: '688032127071',
     projectId: 'swaminarayanstatus-f8550',
+    databaseURL: 'https://swaminarayanstatus-f8550-default-rtdb.firebaseio.com',
     storageBucket: 'swaminarayanstatus-f8550.appspot.com',
     iosClientId: '688032127071-vsjmje2m4uhuo08t3p92t9b1v0rls4mv.apps.googleusercontent.com',
     iosBundleId: 'com.mobileappxperts.swaminarayanvideostatus',
@@ -76,6 +79,7 @@ class DefaultFirebaseOptions {
     appId: '1:688032127071:ios:d125a7a8de3fb241c2e3ea',
     messagingSenderId: '688032127071',
     projectId: 'swaminarayanstatus-f8550',
+    databaseURL: 'https://swaminarayanstatus-f8550-default-rtdb.firebaseio.com',
     storageBucket: 'swaminarayanstatus-f8550.appspot.com',
     iosClientId: '688032127071-vsjmje2m4uhuo08t3p92t9b1v0rls4mv.apps.googleusercontent.com',
     iosBundleId: 'com.mobileappxperts.swaminarayanvideostatus',

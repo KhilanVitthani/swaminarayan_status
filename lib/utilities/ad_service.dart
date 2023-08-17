@@ -2,9 +2,6 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:yodo1mas/Yodo1MAS.dart';
-import 'package:yodo1mas/Yodo1MasBannerAd.dart';
-import 'package:yodo1mas/Yodo1MasNativeAd.dart';
 
 import '../constants/firebase_controller.dart';
 
@@ -27,11 +24,11 @@ class AdService {
       } else {
         SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
         if (adType == AdService.interstitialAd) {
-          Yodo1MAS.instance.showInterstitialAd();
+          // Yodo1MAS.instance.showInterstitialAd();
         } else if (adType == AdService.bannerAd) {
-          Yodo1MAS.instance.showBannerAd();
+          // Yodo1MAS.instance.showBannerAd();
         } else {
-          Yodo1MAS.instance.showRewardAd();
+          // Yodo1MAS.instance.showRewardAd();
         }
         return true;
       }
@@ -47,12 +44,12 @@ class AdService {
     });
     if (isVisible.isTrue) {
       print("object");
-      return Yodo1MASBannerAd(
-        size: BannerSize.Banner,
-        onOpen: () {
-          isBannerVisible.value = true;
-        },
-      );
+      // return Yodo1MASBannerAd(
+      //   size: BannerSize.Banner,
+      //   onOpen: () {
+      //     isBannerVisible.value = true;
+      //   },
+      // );
     } else {
       return SizedBox();
     }
@@ -63,9 +60,9 @@ class AdService {
       isVisible.value = value;
     });
     if (isVisible.isTrue) {
-      return Yodo1MASNativeAd(
-        size: NativeSize.NativeSmall,
-      );
+      // return Yodo1MASNativeAd(
+      //   size: NativeSize.NativeSmall,
+      // );
     } else {
       return SizedBox();
     }
